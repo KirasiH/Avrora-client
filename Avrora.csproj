@@ -5,9 +5,11 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <StartupObject>Avrora.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Core\UserSettings\" />
     <Folder Include="ViewModel\" />
   </ItemGroup>
 
