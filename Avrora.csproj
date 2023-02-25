@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Core\UserSettings\" />
-    <Folder Include="ViewModel\" />
+    <Folder Include="ViewModel\ViewModelChat\" />
   </ItemGroup>
 
 </Project>

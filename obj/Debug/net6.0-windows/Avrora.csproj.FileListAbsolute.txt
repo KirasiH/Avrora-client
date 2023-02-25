@@ -19,4 +19,6 @@ F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\refint\Avrora.dll
 F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\Avrora.pdb
 F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\Avrora.genruntimeconfig.cache
 F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\ref\Avrora.dll
-F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\Avrora_Content.g.cs
+F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\Styles\DarkWindowsStyles.baml
+F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\Pages\PageSettingsUser.g.cs
+F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\Pages\PageSettingsUser.baml

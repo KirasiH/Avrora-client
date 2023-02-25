@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Avrora.Pages;
 
 namespace Avrora
 {
@@ -23,6 +24,12 @@ namespace Avrora
         public MainWindow()
         {
             InitializeComponent();
+
+            this.DataContext = new ViewModel.ViewModelSetting();
+
+            ResourceDictionary resourceDict = new ResourceDictionary();
+            resourceDict.Source = new Uri("Styles/DarkWindowsStyles.xaml", UriKind.Relative);
+            this.Resources.MergedDictionaries.Add(resourceDict);
         }
 
         private void BorderMouseDown(object sender, MouseButtonEventArgs e)
@@ -49,6 +56,30 @@ namespace Avrora
         private void ButtonClose(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void Click_StackPanelUserListChatGroup(object sender, MouseButtonEventArgs e)
+        {
+            ListChatGrid.Visibility = Visibility.Hidden;
+            ChatGridBlock.Visibility = Visibility.Hidden;
+
+            ListSettingsGrid.Visibility= Visibility.Visible;
+            SettingsGridBlock.Visibility= Visibility.Visible;
+        }
+
+        private void Click_ButtonExitListSettingsGrid(object sender, RoutedEventArgs e)
+        {
+            ListSettingsGrid.Visibility = Visibility.Hidden;
+            SettingsGridBlock.Visibility = Visibility.Hidden;
+
+            ListChatGrid.Visibility = Visibility.Visible;
+            ChatGridBlock.Visibility = Visibility.Visible;
+        }
+
+        private void Click_UserSettingsButton(object sender, RoutedEventArgs e)
+        {
+
+            SettingsFrame.Navigate(new PageSettingsUser());
         }
     }
 }
