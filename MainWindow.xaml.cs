@@ -21,15 +21,14 @@ namespace Avrora
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
 
-            this.DataContext = new ViewModel.ViewModelSetting();
-
-            ResourceDictionary resourceDict = new ResourceDictionary();
-            resourceDict.Source = new Uri("Styles/DarkWindowsStyles.xaml", UriKind.Relative);
-            this.Resources.MergedDictionaries.Add(resourceDict);
+            //ResourceDictionary resourceDict = new ResourceDictionary();
+            //resourceDict.Source = new Uri("Styles/DarkWindowsStyles.xaml", UriKind.Relative);
+            //this.Resources.MergedDictionaries.Add(resourceDict);
         }
 
         private void BorderMouseDown(object sender, MouseButtonEventArgs e)

@@ -23,6 +23,18 @@ namespace Avrora.Pages
         public PageSettingsUser()
         {
             InitializeComponent();
+
+            Avrora.ViewModel.ViewModelSetting obj = (Avrora.ViewModel.ViewModelSetting)this.Resources["viewModelSetting"];
+        }
+
+        private void Click_ButtonDelete(object sender, RoutedEventArgs e)
+        {
+            StatusBlock.Text = "Status: Delete user";
+        }
+
+        private void Click_ButtonRecreate(object sender, RoutedEventArgs e) 
+        {
+            StatusBlock.Text = "Status: Recreate user";
         }
     }
 }

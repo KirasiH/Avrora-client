@@ -22,3 +22,5 @@ F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\ref\Avrora.dll
 F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\Styles\DarkWindowsStyles.baml
 F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\Pages\PageSettingsUser.g.cs
 F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\Pages\PageSettingsUser.baml
+F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
+F:\Messeng - Avrora\GPI Client\Avrora\obj\Debug\net6.0-windows\App.baml

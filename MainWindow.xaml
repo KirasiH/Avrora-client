@@ -4,12 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Avrora"
-        xmlns:col="clr-namespace:Avrora.ViewModel.ViewModelSettings"
+        xmlns:col="clr-namespace:Avrora.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="1000"
-        Background=" #35393F"
-        WindowStyle="None"
-        >
+        Style="{DynamicResource ForWindow}"
+        WindowStyle="None">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary  Source="Styles/DarkWindowsStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -30,7 +39,7 @@
         <Border Grid.Row="0" Grid.Column="0" 
                 Grid.ColumnSpan="3"
                 MouseDown="BorderMouseDown"
-                Background="#202021">
+                Style="{DynamicResource ForBorder}">
 
             <Grid HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
@@ -74,10 +83,11 @@
 
         </Border>
 
-        <Grid x:Name="ListChatGrid" Background="#34363F"
+        <Grid x:Name="ListChatGrid" 
+              Style="{DynamicResource ForListChatGrid}"
               Grid.Row="1" 
               
-              Visibility="Hidden">
+              Visibility="Visible">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
@@ -86,9 +96,9 @@
             </Grid.RowDefinitions>
 
             <StackPanel x:Name="StackPanelUserListChatGroup" Grid.Row="2" 
-                        Background="#32323E"
+                        Style="{DynamicResource ForStackPanelUserListChatGroup}"
                         MouseLeftButtonDown="Click_StackPanelUserListChatGroup"
-                        DataContext="{Binding ViewModelUserSettingsComponent}">
+                        DataContext="{StaticResource viewModelSetting}">
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Name: "
@@ -96,7 +106,7 @@
                                Foreground="#FAFAFA"
                                Margin="10 3"></TextBlock>
 
-                    <TextBlock Text="{Binding Path=Name}"
+                    <TextBlock Text="{Binding ViewModelUserSettingsComponent.Name}"
                            Margin="0 3 0 0"
                            Foreground="#F5F5F5"
                            FontSize="15"/>
@@ -109,7 +119,7 @@
                                Foreground="#FAFAFA"
                                Margin="10 0"></TextBlock>
 
-                    <TextBlock Text="{Binding Path=Nickname}"
+                    <TextBlock Text="{Binding ViewModelUserSettingsComponent.Nickname}"
                            Margin="0 0 0 0"
                            Foreground="#F5F5F5"
                            FontSize="15"/>
@@ -119,8 +129,8 @@
         </Grid>
 
         <Grid x:Name="ListSettingsGrid" Grid.Row="1" Grid.Column="0"
-              Visibility="Visible"
-              Background="#32363F">
+              Visibility="Hidden"
+              Style="{DynamicResource ForListSettingsGrid}">
 
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -175,7 +185,8 @@
         </Grid>
 
         <Grid x:Name="ChatGridBlock"  Grid.Column="2" Grid.Row="1"
-              Visibility="Hidden">
+              Visibility="Visible"
+              >
 
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -190,26 +201,23 @@
                 <Button DockPanel.Dock="Left"
                         Content="File" Width="50"
                         FontSize="14"
-                        Background="#202021"
-                        Foreground="White"/>
+                        Style="{DynamicResource ForButtonChatGridBlock}"/>
 
                 <Button DockPanel.Dock="Right"
                         Content="Send" Width="50"
                         Margin="0 0 3 0"
                         FontSize="14"
-                        Background="#202021"
-                        Foreground="White"/>
+                        Style="{DynamicResource ForButtonChatGridBlock}"/>
 
                 <TextBox VerticalContentAlignment="Center"
                          FontSize="15"
-                         Background="#34363F"
-                         Foreground="White"/>
+                         Style="{DynamicResource ForTextBoxChatGridBlock}"/>
 
             </DockPanel>
         </Grid>
 
         <Grid x:Name="SettingsGridBlock" Grid.Column="2" Grid.Row="1"
-              Visibility="Visible">
+              Visibility="Hidden">
 
             <Frame x:Name="SettingsFrame"
                    HorizontalAlignment="Stretch"

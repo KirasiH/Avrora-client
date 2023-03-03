@@ -27,7 +27,7 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
 
-    <Style x:Key="ForTextBlockChatGridBlock" TargetType="TextBlock">
+    <Style x:Key="ForTextBoxChatGridBlock" TargetType="TextBox">
         <Setter Property="Background" Value="#34363F"/>
         <Setter Property="Foreground" Value="White"/>
     </Style>
