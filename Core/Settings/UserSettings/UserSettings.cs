@@ -7,10 +7,12 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Avrora.Core.Settings;
+using Avrora.Core.JsonClassesContainers;
+using System.Net.Http;
 
 namespace Avrora.Core.Settings.UserSettings
 {
-    public class UserSettingsContainer
+    public class UserSettingsAttributes
     {
         public string? name { get; set; }
         public string? nickname { get; set; }
@@ -18,7 +20,7 @@ namespace Avrora.Core.Settings.UserSettings
         public string? second_key { get; set; }
     }
 
-    public class UserSettings : UserSettingsContainer, ISettings
+    public class UserSettings : UserSettingsAttributes, ISettings
     {
 
         private string path_fileSettings = AppDomain.CurrentDomain.BaseDirectory + @"\settings\user\user.json";
@@ -63,12 +65,32 @@ namespace Avrora.Core.Settings.UserSettings
                 obj = stream.ReadToEnd();
             }
 
-            UserSettingsContainer? userSettingsContainer = JsonSerializer.Deserialize<UserSettingsContainer>(obj);
+            UserSettingsAttributes? userSettingsContainer = JsonSerializer.Deserialize<UserSettingsAttributes>(obj);
 
             name = userSettingsContainer.name;
             nickname = userSettingsContainer.nickname;
             first_key = userSettingsContainer.first_key;
             second_key = userSettingsContainer.second_key;
+        }
+
+        public UserSettingsContainer GetContainer()
+        {
+            return new UserSettingsContainer() { name = name,
+                nickname = nickname,
+                first_key = first_key,
+                second_key = second_key};
+        }
+
+        public void ChangeUser(UserSettingsContainer container, HttpResponseMessage mess)
+        {
+            string status = mess.Content.ReadAsStringAsync().Result;
+            if (status == "recreate" || status == "create" )
+            {
+                name = container.name;
+                nickname = container.nickname;
+                first_key = container.first_key;
+                second_key = container.second_key;
+            }
         }
     }
 }

@@ -17,7 +17,9 @@ namespace Avrora.Core
         {
             Settings = new Settings.Settings();
 
-            proxyAvroraAPI = new ProxyAvroraAPI("");
+            proxyAvroraAPI = new ProxyAvroraAPI("http://127.0.0.1:5000", Settings);
+
+            proxyAvroraAPI.EventUserMethods += Settings.userSettings.ChangeUser;
         }
     }
 }

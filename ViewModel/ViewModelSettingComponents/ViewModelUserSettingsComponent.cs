@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Avrora.Core;
+using Avrora.Core.Settings;
+using Avrora.Core.Settings.UserSettings;
+using Avrora.Core.JsonClassesContainers;
 
 namespace Avrora.ViewModel.ViewModelSettings
 {
@@ -20,10 +24,9 @@ namespace Avrora.ViewModel.ViewModelSettings
         {
             var settings = Core.Core.Settings.userSettings;
 
-            Name = settings.name ?? "Not exists name";
-            Nickname = settings.nickname ?? "Not exists nickname";
-            FirstKey = settings.first_key ?? "None";
-            SecondKey = settings.second_key ?? "None";
+            ChangeAttridutes(settings.GetContainer());
+
+            Core.Core.proxyAvroraAPI.EventUserMethods += EventChangeAttributes;
         }
 
         public string Name
@@ -72,6 +75,22 @@ namespace Avrora.ViewModel.ViewModelSettings
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            }
+        }
+
+        public void ChangeAttridutes(UserSettingsContainer container)
+        {
+            Name = container.name ?? "Not exists name";
+            Nickname = container.nickname ?? "Not exists nickname";
+            FirstKey = container.first_key ?? "None";
+            SecondKey = container.second_key ?? "None";
+        }
+
+        public void EventChangeAttributes(UserSettingsContainer container, HttpResponseMessage message)
+        {
+            if (message.StatusCode.ToString() == "Ok")
+            {
+                ChangeAttridutes(container);
             }
         }
     }
