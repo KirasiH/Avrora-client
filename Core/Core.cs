@@ -13,13 +13,14 @@ namespace Avrora.Core
 
         public static ProxyAvroraAPI proxyAvroraAPI { get; private set; }
 
-        public static void Start()
+        static Core()
         {
+
             Settings = new Settings.Settings();
 
             proxyAvroraAPI = new ProxyAvroraAPI("http://127.0.0.1:5000", Settings);
 
-            proxyAvroraAPI.EventUserMethods += Settings.userSettings.ChangeUser;
+            proxyAvroraAPI.EventUserMethods += Settings.userSettings.SetActualUser;
         }
     }
 }

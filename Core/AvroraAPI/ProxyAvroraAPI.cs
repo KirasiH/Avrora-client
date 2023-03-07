@@ -14,7 +14,7 @@ namespace Avrora.Core.AvroraAPI
     {
         public AvroraAPI avroraAPI;
 
-        public delegate void UserMethodsDelegate(UserSettingsContainer conteiner, HttpResponseMessage message);
+        public delegate void UserMethodsDelegate(UserSettingsContainer conteiner, string content);
         public event UserMethodsDelegate EventUserMethods;
 
         private Settings.Settings settings;
@@ -30,7 +30,9 @@ namespace Avrora.Core.AvroraAPI
         {
             HttpResponseMessage mess = await avroraAPI.CreateUserAsync(conteiner);
 
-            EventUserMethods(conteiner, mess);
+            string content = mess.Content.ReadAsStringAsync().Result;
+
+            EventUserMethods(conteiner, content);
 
             return mess;
         }
@@ -39,18 +41,25 @@ namespace Avrora.Core.AvroraAPI
         {
             HttpResponseMessage mess = await avroraAPI.DeleteUserAsync(conteiner);
 
-            EventUserMethods(conteiner, mess);
+            string content = mess.Content.ReadAsStringAsync().Result;
+
+            EventUserMethods(conteiner, content);
 
             return mess;
         }
 
         public async Task<HttpResponseMessage> RecreateUserAsync(UserSettingsTwoContainer twoConteiner)
         {
-            twoConteiner.old_user = settings.userSettings.GetContainer();
+            twoConteiner.old_user = settings.userSettings.GetActualUser();
 
             HttpResponseMessage mess = await avroraAPI.RecreateUserAsync(twoConteiner);
 
-            EventUserMethods(twoConteiner.new_user, mess);
+            string content = mess.Content.ReadAsStringAsync().Result;
+
+            if (twoConteiner.new_user == null)
+                twoConteiner.new_user = new UserSettingsContainer();
+
+            EventUserMethods(twoConteiner.new_user, content);
 
             return mess;
         }

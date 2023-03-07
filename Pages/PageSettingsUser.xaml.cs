@@ -27,7 +27,7 @@ namespace Avrora.Pages
         {
             InitializeComponent();
 
-            Avrora.ViewModel.ViewModelSetting obj = (Avrora.ViewModel.ViewModelSetting)this.Resources["viewModelSetting"];
+            //Avrora.ViewModel.ViewModelSetting obj = (Avrora.ViewModel.ViewModelSetting)this.Resources["viewModelSetting"];
 
             Core.Core.proxyAvroraAPI.EventUserMethods += EventUserMethods;
         }
@@ -43,7 +43,7 @@ namespace Avrora.Pages
                 second_key= TextBoxSecondKey.Text,
             };
 
-            Core.Core.proxyAvroraAPI.DeleteUserAsync(container);
+            _ = Core.Core.proxyAvroraAPI.DeleteUserAsync(container);
         }
 
         private void Click_ButtonRecreate(object sender, RoutedEventArgs e) 
@@ -58,7 +58,7 @@ namespace Avrora.Pages
 
             UserSettingsTwoContainer twoContainer= new UserSettingsTwoContainer() { new_user= container };
 
-            Core.Core.proxyAvroraAPI.RecreateUserAsync(twoContainer);
+            _ = Core.Core.proxyAvroraAPI.RecreateUserAsync(twoContainer);
         }
 
         private void Click_ButtomCreate(object sender, RoutedEventArgs e)
@@ -71,12 +71,12 @@ namespace Avrora.Pages
                 second_key = TextBoxSecondKey.Text,
             };
 
-            Core.Core.proxyAvroraAPI.CreateUserAsync(container);
+            _ = Core.Core.proxyAvroraAPI.CreateUserAsync(container);
         }
 
-        public void EventUserMethods(UserSettingsContainer conteiner, HttpResponseMessage message)
+        public void EventUserMethods(UserSettingsContainer conteiner, string content)
         {
-            StatusBlock.Text = message.Content.ReadAsStringAsync().Result;
+            StatusBlock.Text = content;
         }
     }
 }

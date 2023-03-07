@@ -10,7 +10,7 @@ namespace Avrora.Core.JsonClassesContainers
 {
     public class UserSettingsTwoContainer
     {
-        public UserSettingsContainer old_user { get; set; }
-        public UserSettingsContainer new_user { get; set; }
+        public UserSettingsContainer? old_user { get; set; }
+        public UserSettingsContainer? new_user { get; set; }
     }
 }

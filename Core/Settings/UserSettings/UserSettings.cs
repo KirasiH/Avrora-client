@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using Avrora.Core.Settings;
 using Avrora.Core.JsonClassesContainers;
 using System.Net.Http;
+using System.ComponentModel;
 
 namespace Avrora.Core.Settings.UserSettings
 {
-    public class UserSettingsAttributes
+    public class UserSettingsFields
     {
         public string? name { get; set; }
         public string? nickname { get; set; }
@@ -20,30 +21,33 @@ namespace Avrora.Core.Settings.UserSettings
         public string? second_key { get; set; }
     }
 
-    public class UserSettings : UserSettingsAttributes, ISettings
+    public class UserSettings : UserSettingsFields, ISettings
     {
 
         private string path_fileSettings = AppDomain.CurrentDomain.BaseDirectory + @"\settings\user\user.json";
 
-        public UserSettings()
+        private ApplicationSettingsContainer actualServer;
+        private Dictionary<string, UserSettingsContainer> userSettings;
+
+        public delegate void DelegateChangeUser(UserSettingsContainer container);
+        public event DelegateChangeUser EventChangeActualUser;
+
+        public UserSettings(ApplicationSettingsContainer actServer)
         {
-            // FileNotFoundException
+            actualServer = actServer ?? new ApplicationSettingsContainer() { actualURIServer = "" };
 
             try
             {
-                using (FileStream stream = new FileStream(path_fileSettings, FileMode.Open))
-                {
+                using (FileStream stream = new FileStream(path_fileSettings, FileMode.Open)) { }
 
-                }
-
-                Deserialize();
-                
             }
             catch (FileNotFoundException)
             {
                 Serializer();
             }
 
+
+            Deserialize();
         }
 
         private void Serializer()
@@ -60,36 +64,82 @@ namespace Avrora.Core.Settings.UserSettings
         {
             string obj;
 
-            using (StreamReader stream = File.OpenText(path_fileSettings))
-            {
-                obj = stream.ReadToEnd();
-            }
+            using (StreamReader stream = File.OpenText(path_fileSettings)) { obj = stream.ReadToEnd(); }
 
-            UserSettingsAttributes? userSettingsContainer = JsonSerializer.Deserialize<UserSettingsAttributes>(obj);
+            userSettings = JsonSerializer.Deserialize<Dictionary<string, UserSettingsContainer>>(obj) ?? new Dictionary<string, UserSettingsContainer>();
 
-            name = userSettingsContainer.name;
-            nickname = userSettingsContainer.nickname;
-            first_key = userSettingsContainer.first_key;
-            second_key = userSettingsContainer.second_key;
+            UserSettingsContainer? container = null;
+
+            if (!userSettings.TryGetValue(actualServer.actualURIServer ?? "", out container))
+                return;
+
+            SetActualUser(container);
         }
 
-        public UserSettingsContainer GetContainer()
+        public UserSettingsContainer GetActualUser()
         {
-            return new UserSettingsContainer() { name = name,
+            return new UserSettingsContainer() { 
+                name = name,
                 nickname = nickname,
                 first_key = first_key,
                 second_key = second_key};
         }
 
-        public void ChangeUser(UserSettingsContainer container, HttpResponseMessage mess)
+        public void SetActualUser(UserSettingsContainer container)
         {
-            string status = mess.Content.ReadAsStringAsync().Result;
-            if (status == "recreate" || status == "create" )
+            name = container.name;
+            nickname = container.nickname;
+            first_key = container.first_key;
+            second_key = container.second_key;
+
+            userSettings[actualServer.actualURIServer] = container;
+
+            if (EventChangeActualUser == null)
+                return;
+
+            EventChangeActualUser(container);
+
+            SaveActualUser();
+        }
+
+        public void SetActualServer(ApplicationSettingsContainer container)
+        {
+            UserSettingsContainer? userContainer = null;
+
+            actualServer = container;
+
+            if (!userSettings.TryGetValue(actualServer.actualURIServer ?? "", out userContainer))
             {
-                name = container.name;
-                nickname = container.nickname;
-                first_key = container.first_key;
-                second_key = container.second_key;
+                return;
+            }
+
+            SetActualUser(userContainer);
+        }
+
+        public void SetActualUser(UserSettingsContainer container, string content)
+        {
+            if (content == "recreate" || content == "create" )
+                SetActualUser(container);
+            if (content == "delete")
+                DeleteActualUser();
+        }
+
+        private void DeleteActualUser()
+        {
+            userSettings[actualServer.actualURIServer] = new UserSettingsContainer();
+
+            EventChangeActualUser(userSettings[actualServer.actualURIServer]);
+
+            SaveActualUser();
+        }
+
+        private void SaveActualUser()
+        {
+            string json = JsonSerializer.Serialize(userSettings);
+
+            using (StreamWriter stream = new StreamWriter(path_fileSettings))
+            {
+                stream.WriteAsync(json);
             }
         }
     }

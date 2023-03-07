@@ -24,9 +24,9 @@ namespace Avrora.ViewModel.ViewModelSettings
         {
             var settings = Core.Core.Settings.userSettings;
 
-            ChangeAttridutes(settings.GetContainer());
+            ChangeAttridutes(settings.GetActualUser());
 
-            Core.Core.proxyAvroraAPI.EventUserMethods += EventChangeAttributes;
+            Core.Core.Settings.userSettings.EventChangeActualUser += ChangeAttridutes;
         }
 
         public string Name
@@ -86,9 +86,9 @@ namespace Avrora.ViewModel.ViewModelSettings
             SecondKey = container.second_key ?? "None";
         }
 
-        public void EventChangeAttributes(UserSettingsContainer container, HttpResponseMessage message)
+        public void EventChangeAttributes(UserSettingsContainer container, string content)
         {
-            if (message.StatusCode.ToString() == "Ok")
+            if (content == "create" || content == "recreate")
             {
                 ChangeAttridutes(container);
             }

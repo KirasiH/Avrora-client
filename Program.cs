@@ -12,7 +12,7 @@ namespace Avrora
         [STAThread]
         static void Main()
         {
-            Core.Core.Start();
+            //Core.Core.Start();
 
             App app = new App();
             app.InitializeComponent();

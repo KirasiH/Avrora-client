@@ -77,7 +77,6 @@ namespace Avrora
 
         private void Click_UserSettingsButton(object sender, RoutedEventArgs e)
         {
-
             SettingsFrame.Navigate(new PageSettingsUser());
         }
     }
