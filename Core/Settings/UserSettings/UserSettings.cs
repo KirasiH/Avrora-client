@@ -55,7 +55,7 @@ namespace Avrora.Core.Settings.UserSettings
 
             using (StreamWriter stream = new StreamWriter(path_fileSettings))
             {
-                string obj = JsonSerializer.Serialize(this);
+                string obj = JsonSerializer.Serialize(new Dictionary<string, UserSettingsFields>());
                 stream.Write(obj);
             }
         }

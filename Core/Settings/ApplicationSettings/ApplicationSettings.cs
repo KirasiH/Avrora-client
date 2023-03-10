@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Avrora.Core.JsonClassesContainers;
 
@@ -12,7 +13,7 @@ namespace Avrora.Core.Settings.ApplicationSettings
 
     public class ApplicationListServers
     {
-        public List<string>? listServer;
+        public List<string> listServer { get; set; }
     }
     public class ApplicationSettingsFields : ApplicationListServers
     {
@@ -30,18 +31,22 @@ namespace Avrora.Core.Settings.ApplicationSettings
             try
             {
                 using (FileStream stream = new FileStream(path_fileApplication, FileMode.Open)) { }
-
-                Deserialize();
-
             }
             catch (FileNotFoundException)
             {
                 Serializer();
             }
+
+            Deserialize();
         }
 
         public void SetActualServer(ApplicationSettingsContainer container)
         {
+            if (!listServer.Contains("e"))
+                listServer.Add(container.actualURIServer);
+
+            container.listServer = listServer;
+
             string json = JsonSerializer.Serialize(container);
 
             using (StreamWriter stream = new StreamWriter(path_fileApplication))
@@ -54,7 +59,7 @@ namespace Avrora.Core.Settings.ApplicationSettings
 
         public ApplicationSettingsContainer GetActualServer()
         {
-            return new ApplicationSettingsContainer() { actualURIServer = actualURIServer };
+            return new ApplicationSettingsContainer() { actualURIServer = actualURIServer, listServer = listServer };
         }
 
         private void Serializer()
@@ -64,6 +69,8 @@ namespace Avrora.Core.Settings.ApplicationSettings
                 string obj = JsonSerializer.Serialize(this);
                 stream.Write(obj);
             }
+
+            listServer = new List<string>();
         }
 
         private void Deserialize()
@@ -80,6 +87,7 @@ namespace Avrora.Core.Settings.ApplicationSettings
                 return;
 
             actualURIServer = applicationSettingsFields.actualURIServer;
+            listServer = applicationSettingsFields.listServer ?? new List<string>();
         }
     }
 }
