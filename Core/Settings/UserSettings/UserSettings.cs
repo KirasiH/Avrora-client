@@ -99,7 +99,7 @@ namespace Avrora.Core.Settings.UserSettings
 
             EventChangeActualUser(container);
 
-            SaveActualUser();
+            Save();
         }
 
         public void SetActualServer(ApplicationSettingsContainer container)
@@ -124,16 +124,24 @@ namespace Avrora.Core.Settings.UserSettings
                 DeleteActualUser();
         }
 
-        private void DeleteActualUser()
+        public void DeleteActualUser(ApplicationSettingsContainer? container = null)
         {
-            userSettings[actualServer.actualURIServer] = new UserSettingsContainer();
+            try
+            {
+                if (container == null)
+                    userSettings[actualServer.actualURIServer] = new UserSettingsContainer();
+                else
+                    userSettings[container.actualURIServer] = new UserSettingsContainer();
+
+            }
+            catch { }
 
             EventChangeActualUser(userSettings[actualServer.actualURIServer]);
 
-            SaveActualUser();
+            Save();
         }
 
-        private void SaveActualUser()
+        private void Save()
         {
             string json = JsonSerializer.Serialize(userSettings);
 

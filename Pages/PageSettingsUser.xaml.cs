@@ -27,8 +27,6 @@ namespace Avrora.Pages
         {
             InitializeComponent();
 
-            //Avrora.ViewModel.ViewModelSetting obj = (Avrora.ViewModel.ViewModelSetting)this.Resources["viewModelSetting"];
-
             Core.Core.proxyAvroraAPI.EventUserMethods += EventUserMethods;
         }
 
@@ -72,6 +70,19 @@ namespace Avrora.Pages
             };
 
             _ = Core.Core.proxyAvroraAPI.CreateUserAsync(container);
+        }
+
+        private void CLick_ButtonSet(object sender, RoutedEventArgs e)
+        {
+            UserSettingsContainer container = new UserSettingsContainer()
+            {
+                name = TextBoxName.Text,
+                nickname = TextBoxNickname.Text,
+                first_key = TextBoxFirstKey.Text,
+                second_key = TextBoxSecondKey.Text,
+            };
+
+            Core.Core.Settings.userSettings.SetActualUser(container);
         }
 
         public void EventUserMethods(UserSettingsContainer conteiner, string content)

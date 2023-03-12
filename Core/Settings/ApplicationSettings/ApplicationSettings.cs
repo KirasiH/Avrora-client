@@ -24,8 +24,11 @@ namespace Avrora.Core.Settings.ApplicationSettings
     {
         private string path_fileApplication = AppDomain.CurrentDomain.BaseDirectory + @"\settings\application\application.json";
 
-        public delegate void DelegateChangeActualUser(ApplicationSettingsContainer container);
-        public event DelegateChangeActualUser EventChangeActualServer;
+        public delegate void DelegateChangeActualServer(ApplicationSettingsContainer container);
+        public event DelegateChangeActualServer EventChangeActualServer;
+
+        public delegate void DelegateDeleteActualServer(ApplicationSettingsContainer container);
+        public event DelegateDeleteActualServer EventDeleteActualServer;
         public ApplicationSettings() 
         {
             try
@@ -42,8 +45,31 @@ namespace Avrora.Core.Settings.ApplicationSettings
 
         public void SetActualServer(ApplicationSettingsContainer container)
         {
-            if (!listServer.Contains("e"))
+            actualURIServer = container.actualURIServer;
+
+            if (!listServer.Contains(container.actualURIServer))
                 listServer.Add(container.actualURIServer);
+
+                container.listServer = listServer;
+
+                string json = JsonSerializer.Serialize(container);
+
+                using (StreamWriter stream = new StreamWriter(path_fileApplication))
+                {
+                    stream.WriteAsync(json);
+                }
+
+            EventChangeActualServer(container);
+        }
+
+        public ApplicationSettingsContainer GetActualServer()
+        {
+            return new ApplicationSettingsContainer() { actualURIServer = actualURIServer, listServer = listServer };
+        }
+
+        public void DeleteServer(ApplicationSettingsContainer container)
+        {
+            listServer.Remove(container.actualURIServer);
 
             container.listServer = listServer;
 
@@ -54,12 +80,7 @@ namespace Avrora.Core.Settings.ApplicationSettings
                 stream.WriteAsync(json);
             }
 
-            EventChangeActualServer(container);
-        }
-
-        public ApplicationSettingsContainer GetActualServer()
-        {
-            return new ApplicationSettingsContainer() { actualURIServer = actualURIServer, listServer = listServer };
+            EventDeleteActualServer(container);
         }
 
         private void Serializer()

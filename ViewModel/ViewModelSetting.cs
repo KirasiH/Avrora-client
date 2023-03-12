@@ -1,4 +1,5 @@
-﻿using Avrora.ViewModel.ViewModelSettings;
+﻿using Avrora.ViewModel.ViewModelSettingComponents;
+using Avrora.ViewModel.ViewModelSettings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,17 @@ namespace Avrora.ViewModel
     {
 
         public ViewModelUserSettingsComponent viewModelUserSettingsComponent;
+        public ViewModelSettingsApplicationComponent viewModelSettingsApplicationComponent;
+
+        public ViewModelSettingsApplicationComponent ViewModelSettingsApplicationComponent
+        {
+            get { return viewModelSettingsApplicationComponent; }
+            set
+            {
+                viewModelSettingsApplicationComponent = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ViewModelUserSettingsComponent ViewModelUserSettingsComponent
         {
@@ -30,6 +42,7 @@ namespace Avrora.ViewModel
         public ViewModelSetting() 
         {
             viewModelUserSettingsComponent= new ViewModelUserSettingsComponent();
+            viewModelSettingsApplicationComponent= new ViewModelSettingsApplicationComponent();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

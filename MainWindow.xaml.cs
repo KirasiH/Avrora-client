@@ -25,10 +25,6 @@ namespace Avrora
         public MainWindow()
         {
             InitializeComponent();
-
-            //ResourceDictionary resourceDict = new ResourceDictionary();
-            //resourceDict.Source = new Uri("Styles/DarkWindowsStyles.xaml", UriKind.Relative);
-            //this.Resources.MergedDictionaries.Add(resourceDict);
         }
 
         private void BorderMouseDown(object sender, MouseButtonEventArgs e)
@@ -75,9 +71,14 @@ namespace Avrora
             ChatGridBlock.Visibility = Visibility.Visible;
         }
 
-        private void Click_UserSettingsButton(object sender, RoutedEventArgs e)
+        private void Click_SettingsButton(object sender, RoutedEventArgs e)
         {
-            SettingsFrame.Navigate(new PageSettingsUser());
+            Button btn = (Button)sender;
+
+            if (btn.Name == "UserButton")
+                SettingsFrame.Navigate(new PageSettingsUser());
+            else if (btn.Name == "ApplicationButton")
+                SettingsFrame.Navigate(new PageApplicationSettings());
         }
     }
 }

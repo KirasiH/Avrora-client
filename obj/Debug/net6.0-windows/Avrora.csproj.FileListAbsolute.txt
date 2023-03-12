@@ -50,3 +50,5 @@ C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\Avr
 C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\Avrora.csproj.CoreCompileInputs.cache
 C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\Avrora.genruntimeconfig.cache
 C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\ref\Avrora.dll
+C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\Pages\PageApplicationSettings.g.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\Pages\PageApplicationSettings.baml

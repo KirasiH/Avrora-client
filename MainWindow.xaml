@@ -11,12 +11,7 @@
         WindowStyle="None">
 
     <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary  Source="Styles/DarkWindowsStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
-        </ResourceDictionary>
+        <ResourceDictionary  Source="Styles/DarkWindowsStyles.xaml"/>
     </Window.Resources>
 
     <Grid>
@@ -148,29 +143,32 @@
             <StackPanel x:Name="StackPanelListButtonSettings">
 
                 <StackPanel Height="60">
-                    <Button Content="Application" 
+                    <Button x:Name="ApplicationButton"
+                            Content="Application" 
                             Margin="3 3"
                             Height="54"
                             Background="Transparent"
                             Foreground="White"
                             FontSize="16"
-                            />
+                            Click="Click_SettingsButton"/>
 
                 </StackPanel>
                 
                 <StackPanel Height="60">
-                    <Button Content="User" 
+                    <Button x:Name="UserButton"
+                            Content="User" 
                             Margin="3 3"
                             Height="54"
                             Background="Transparent"
                             Foreground="White"
                             FontSize="16"
-                            Click="Click_UserSettingsButton"/>
+                            Click="Click_SettingsButton"/>
 
                 </StackPanel>
 
                 <StackPanel Height="60">
-                    <Button Content="Chat" 
+                    <Button x:Name="ChatButton"
+                            Content="Chat" 
                             Margin="3 3"
                             Height="54"
                             Background="Transparent"

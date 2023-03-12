@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\App.xaml
-3-713827664
+4-756409113
 
-221769892497
+241579994070
 194237474483
-MainWindow.xaml;Pages\PageSettingsUser.xaml;Styles\DarkWindowsStyles.xaml;
+MainWindow.xaml;Pages\PageApplicationSettings.xaml;Pages\PageSettingsUser.xaml;Styles\DarkWindowsStyles.xaml;
 
 False
 

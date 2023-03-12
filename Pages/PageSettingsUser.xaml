@@ -17,7 +17,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.7*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0" 
@@ -100,7 +100,17 @@
                     Margin="10 7 10 7"
                     FontSize="15"
                     Click="Click_ButtomCreate"/>
-            
+
+            <Button Content="Set"
+                    VerticalAlignment="Top"
+                    Background="#32383F"
+                    Foreground="White"
+                    Height ="35"
+                    Width="210"
+                    Margin="10 0 10 7"
+                    FontSize="15"
+                    Click ="CLick_ButtonSet"/>
+
             <Button Content="Delete"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"

@@ -34,8 +34,7 @@ namespace Avrora.Core.Settings
             userSettings = new UserSettings.UserSettings(applicationSettings.GetActualServer());
 
             applicationSettings.EventChangeActualServer += userSettings.SetActualServer;
-
-            applicationSettings.SetActualServer(new JsonClassesContainers.ApplicationSettingsContainer() { actualURIServer = "http://127.0.0.1:5000" });
+            applicationSettings.EventDeleteActualServer += userSettings.DeleteActualUser;
         }
     }
 }
