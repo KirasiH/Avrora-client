@@ -10,12 +10,15 @@ using Avrora.Core.JsonClassesContainers;
 
 namespace Avrora.Core.AvroraAPI
 {
-    public class ProxyAvroraAPI : IAvroraAPI
+    public class ProxyAvroraAPI
     {
         public AvroraAPI avroraAPI;
 
         public delegate void UserMethodsDelegate(UserSettingsContainer conteiner, string content);
         public event UserMethodsDelegate EventUserMethods;
+
+        public delegate void DelegateErrorURLServer(string uri);
+        public event DelegateErrorURLServer EventErrorURIServer;
 
         private Settings.Settings settings;
 
@@ -26,42 +29,93 @@ namespace Avrora.Core.AvroraAPI
             avroraAPI = new AvroraAPI(uri);
         }
 
-        public async Task<HttpResponseMessage> CreateUserAsync(UserSettingsContainer conteiner)
+        public void ChangeURI(string uri)
         {
-            HttpResponseMessage mess = await avroraAPI.CreateUserAsync(conteiner);
-
-            string content = mess.Content.ReadAsStringAsync().Result;
-
-            EventUserMethods(conteiner, content);
-
-            return mess;
+            avroraAPI.Url = uri;
         }
 
-        public async Task<HttpResponseMessage> DeleteUserAsync(UserSettingsContainer conteiner)
+        public async Task CreateUserAsync(UserSettingsContainer conteiner)
         {
-            HttpResponseMessage mess = await avroraAPI.DeleteUserAsync(conteiner);
+            HttpResponseMessage mess;
 
-            string content = mess.Content.ReadAsStringAsync().Result;
+            try
+            {
+                mess = await avroraAPI.CreateUserAsync(conteiner);
+            }
+            catch (InvalidOperationException) 
+            {
+                EventErrorURIServer(avroraAPI.Url);
+                return;
+            }
+            catch (HttpRequestException)
+            {
+                EventErrorURIServer(avroraAPI.Url);
+                return;
+            }
+            catch(TaskCanceledException)
+            {
+                EventErrorURIServer(avroraAPI.Url);
+                return;
+            }
+
+            string content = await mess.Content.ReadAsStringAsync();
 
             EventUserMethods(conteiner, content);
-
-            return mess;
         }
 
-        public async Task<HttpResponseMessage> RecreateUserAsync(UserSettingsTwoContainer twoConteiner)
+        public async Task DeleteUserAsync(UserSettingsContainer conteiner)
+        {
+            HttpResponseMessage mess;
+
+            try
+            {
+                mess = await avroraAPI.DeleteUserAsync(conteiner);
+            }
+            catch (InvalidOperationException)
+            {
+                EventErrorURIServer(avroraAPI.Url);
+                return;
+            }
+            catch (HttpRequestException)
+            {
+                EventErrorURIServer(avroraAPI.Url);
+                return;
+            }
+            catch(TaskCanceledException)
+            {
+                EventErrorURIServer(avroraAPI.Url);
+                return;
+            }
+
+            string content = await mess.Content.ReadAsStringAsync();
+
+            EventUserMethods(conteiner, content);
+        }
+
+        public async Task RecreateUserAsync(UserSettingsTwoContainer twoConteiner)
         {
             twoConteiner.old_user = settings.userSettings.GetActualUser();
 
-            HttpResponseMessage mess = await avroraAPI.RecreateUserAsync(twoConteiner);
+            HttpResponseMessage mess;
 
-            string content = mess.Content.ReadAsStringAsync().Result;
+            try
+            {
+                mess = await avroraAPI.RecreateUserAsync(twoConteiner);
+            }
+             catch (InvalidOperationException)
+            {
+                EventErrorURIServer(avroraAPI.Url);
+                return;
+            }
+            catch (TaskCanceledException)
+            {
+                EventErrorURIServer(avroraAPI.Url);
+                return;
+            }
 
-            if (twoConteiner.new_user == null)
-                twoConteiner.new_user = new UserSettingsContainer();
+            string content = await mess.Content.ReadAsStringAsync();
 
             EventUserMethods(twoConteiner.new_user, content);
-
-            return mess;
         }
 
         public Task RecvUserAsync(UserSettingsContainer conteiner)

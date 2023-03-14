@@ -1,7 +1,9 @@
 ﻿using Avrora.Core.AvroraAPI;
+using Avrora.Core.JsonClassesContainers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +20,9 @@ namespace Avrora.Core
 
             Settings = new Settings.Settings();
 
-            proxyAvroraAPI = new ProxyAvroraAPI("http://127.0.0.1:5000", Settings);
+            string actual = Settings.applicationSettings.actualURIServer;
+
+            proxyAvroraAPI = new ProxyAvroraAPI(actual, Settings);
 
             proxyAvroraAPI.EventUserMethods += Settings.userSettings.SetActualUser;
         }

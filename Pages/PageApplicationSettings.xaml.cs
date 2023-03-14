@@ -44,6 +44,7 @@ namespace Avrora.Pages
             ApplicationSettingsContainer container = new ApplicationSettingsContainer() { actualURIServer = (string)combox.SelectedItem };
 
             Core.Core.Settings.applicationSettings.SetActualServer(container);
+            Core.Core.proxyAvroraAPI.ChangeURI(container.actualURIServer);
         }
     }
 }

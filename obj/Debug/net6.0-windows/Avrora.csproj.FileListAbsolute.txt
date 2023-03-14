@@ -52,3 +52,31 @@ C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\Avr
 C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\ref\Avrora.dll
 C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\Pages\PageApplicationSettings.g.cs
 C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Debug\net6.0-windows\Pages\PageApplicationSettings.baml
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\bin\Debug\net6.0-windows\Avrora.exe
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\bin\Debug\net6.0-windows\Avrora.deps.json
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\bin\Debug\net6.0-windows\Avrora.runtimeconfig.json
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\bin\Debug\net6.0-windows\Avrora.dll
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\bin\Debug\net6.0-windows\Avrora.pdb
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora.csproj.AssemblyReference.cache
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Styles\DarkWindowsStyles.baml
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\MainWindow.g.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Pages\PageApplicationSettings.g.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Pages\PageSettingsUser.g.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\App.g.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora_MarkupCompile.cache
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora_MarkupCompile.lref
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\App.baml
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\MainWindow.baml
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Pages\PageApplicationSettings.baml
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Pages\PageSettingsUser.baml
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora.g.resources
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora.AssemblyInfoInputs.cache
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora.AssemblyInfo.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora.csproj.CoreCompileInputs.cache
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora.dll
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\refint\Avrora.dll
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora.pdb
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\Avrora.genruntimeconfig.cache
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application\obj\Debug\net6.0-windows\ref\Avrora.dll

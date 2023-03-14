@@ -14,12 +14,19 @@ namespace Avrora.Core.AvroraAPI
 {
     public class AvroraAPI : IAvroraAPI
     {
-        private HttpClient client = new HttpClient();
+        private HttpClient client;
         private string url;
-
+        public string Url
+        {
+            get { return url; }
+            set { url = value; }
+        }
 
         public AvroraAPI(string url)
         {
+            client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(2);
+
             this.url = url;
         }
         private async Task<HttpResponseMessage> UserMethods(string uri, UserSettingsTwoContainer twoContainer, HttpMethod method)

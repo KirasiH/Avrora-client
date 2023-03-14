@@ -28,6 +28,7 @@ namespace Avrora.Pages
             InitializeComponent();
 
             Core.Core.proxyAvroraAPI.EventUserMethods += EventUserMethods;
+            Core.Core.proxyAvroraAPI.EventErrorURIServer += ErrorURIServer;
         }
 
         private void Click_ButtonDelete(object sender, RoutedEventArgs e)
@@ -88,6 +89,11 @@ namespace Avrora.Pages
         public void EventUserMethods(UserSettingsContainer conteiner, string content)
         {
             StatusBlock.Text = content;
+        }
+        
+        public void ErrorURIServer(string uri)
+        {
+            StatusBlock.Text = $"Server with this uri - {uri} dont answer";
         }
     }
 }

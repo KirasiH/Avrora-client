@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Doctor Ivan\\Documents\\Avrora\\Client\\Avrora\\Avrora.csproj",
+      "projectUniqueName": "C:\\Users\\Doctor Ivan\\Documents\\Avrora\\Client change application\\Avrora.csproj",
       "projectName": "Avrora",
-      "projectPath": "C:\\Users\\Doctor Ivan\\Documents\\Avrora\\Client\\Avrora\\Avrora.csproj",
+      "projectPath": "C:\\Users\\Doctor Ivan\\Documents\\Avrora\\Client change application\\Avrora.csproj",
       "packagesPath": "C:\\Users\\Doctor Ivan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Doctor Ivan\\Documents\\Avrora\\Client\\Avrora\\obj\\",
+      "outputPath": "C:\\Users\\Doctor Ivan\\Documents\\Avrora\\Client change application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
