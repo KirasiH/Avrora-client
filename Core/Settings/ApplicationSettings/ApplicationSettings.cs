@@ -13,11 +13,11 @@ namespace Avrora.Core.Settings.ApplicationSettings
 
     public class ApplicationListServers
     {
-        public List<string> listServer { get; set; }
+        public List<string> listServer { get; set; } = new List<string>();
     }
     public class ApplicationSettingsFields : ApplicationListServers
     {
-        public string? actualURIServer { get; set; }
+        public string actualURIServer { get; set; } = "";
     }
 
     public class ApplicationSettings : ApplicationSettingsFields, ISettings
@@ -25,10 +25,10 @@ namespace Avrora.Core.Settings.ApplicationSettings
         private string path_fileApplication = AppDomain.CurrentDomain.BaseDirectory + @"\settings\application\application.json";
 
         public delegate void DelegateChangeActualServer(ApplicationSettingsContainer container);
-        public event DelegateChangeActualServer EventChangeActualServer;
+        public event DelegateChangeActualServer? EventChangeActualServer;
 
         public delegate void DelegateDeleteActualServer(ApplicationSettingsContainer container);
-        public event DelegateDeleteActualServer EventDeleteActualServer;
+        public event DelegateDeleteActualServer? EventDeleteActualServer;
         public ApplicationSettings() 
         {
             try
@@ -43,14 +43,14 @@ namespace Avrora.Core.Settings.ApplicationSettings
             Deserialize();
         }
 
-        public void SetActualServer(ApplicationSettingsContainer container)
+        public void SetActualServer(string uri)
         {
-            actualURIServer = container.actualURIServer;
+            actualURIServer = uri;
 
-            if (!listServer.Contains(container.actualURIServer))
-                listServer.Add(container.actualURIServer);
+            ApplicationSettingsContainer container = new ApplicationSettingsContainer() { actualURIServer = uri, listServer = listServer };
 
-                container.listServer = listServer;
+            if (!listServer.Contains(actualURIServer))
+                listServer.Add(actualURIServer);
 
                 string json = JsonSerializer.Serialize(container);
 
@@ -59,7 +59,8 @@ namespace Avrora.Core.Settings.ApplicationSettings
                     stream.WriteAsync(json);
                 }
 
-            EventChangeActualServer(container);
+            if (EventChangeActualServer != null)
+                EventChangeActualServer(container);
         }
 
         public ApplicationSettingsContainer GetActualServer()
@@ -80,7 +81,8 @@ namespace Avrora.Core.Settings.ApplicationSettings
                 stream.WriteAsync(json);
             }
 
-            EventDeleteActualServer(container);
+            if (EventDeleteActualServer != null)
+                EventDeleteActualServer(container);
         }
 
         private void Serializer()
@@ -108,7 +110,7 @@ namespace Avrora.Core.Settings.ApplicationSettings
                 return;
 
             actualURIServer = applicationSettingsFields.actualURIServer;
-            listServer = applicationSettingsFields.listServer ?? new List<string>();
+            listServer = applicationSettingsFields.listServer;
         }
     }
 }

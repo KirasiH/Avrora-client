@@ -30,11 +30,12 @@
                                Foreground="White"
                                FontSize="18"
                                Margin="0 5"/>
-                    <ComboBox Margin="30 0 0 0"
+                    <ComboBox x:Name="ServersCombobox"
+                              Margin="30 0 0 0"
                               Width="360"
                               FontSize="16"
                               ItemsSource="{Binding Servers}"
-                              SelectedItem="{Binding SelectedServer}"
+                              SelectedItem="{Binding SelectedServer, Mode=TwoWay}"
                               SelectionChanged="SelectedChanged"></ComboBox>
                 </StackPanel>
 

@@ -29,7 +29,7 @@ namespace Avrora.Pages
 
         private void Click_AddServer(object sender, RoutedEventArgs e)
         {
-            Core.Core.Settings.applicationSettings.SetActualServer(new ApplicationSettingsContainer() { actualURIServer = TextBoxNameServer.Text });
+            Core.Core.SetActualServer(TextBoxNameServer.Text);
         }
 
         private void Click_DeleteServer(object sender, RoutedEventArgs e)
@@ -39,12 +39,12 @@ namespace Avrora.Pages
 
         private void SelectedChanged(object sender, SelectionChangedEventArgs e) 
         {
-            ComboBox combox = (ComboBox)sender;
+            if (sender is ComboBox combox)
+            {
+                combox = (ComboBox)sender;
 
-            ApplicationSettingsContainer container = new ApplicationSettingsContainer() { actualURIServer = (string)combox.SelectedItem };
-
-            Core.Core.Settings.applicationSettings.SetActualServer(container);
-            Core.Core.proxyAvroraAPI.ChangeURI(container.actualURIServer);
+                Core.Core.SetActualServer((string)combox.SelectedItem);
+            }
         }
     }
 }

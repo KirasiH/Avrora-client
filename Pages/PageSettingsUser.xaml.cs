@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Avrora.Core.JsonClassesContainers;
+using Avrora.Core;
 
 namespace Avrora.Pages
 {
@@ -27,8 +28,8 @@ namespace Avrora.Pages
         {
             InitializeComponent();
 
-            Core.Core.proxyAvroraAPI.EventUserMethods += EventUserMethods;
-            Core.Core.proxyAvroraAPI.EventErrorURIServer += ErrorURIServer;
+            Core.Core.AvroraAPI.EventUserMethods += EventUserMethods;
+            Core.Core.AvroraAPI.EventErrorURIServer += ErrorURIServer;
         }
 
         private void Click_ButtonDelete(object sender, RoutedEventArgs e)
@@ -42,7 +43,7 @@ namespace Avrora.Pages
                 second_key= TextBoxSecondKey.Text,
             };
 
-            _ = Core.Core.proxyAvroraAPI.DeleteUserAsync(container);
+            Core.Core.DeleteUserAsync(container);
         }
 
         private void Click_ButtonRecreate(object sender, RoutedEventArgs e) 
@@ -57,7 +58,7 @@ namespace Avrora.Pages
 
             UserSettingsTwoContainer twoContainer= new UserSettingsTwoContainer() { new_user= container };
 
-            _ = Core.Core.proxyAvroraAPI.RecreateUserAsync(twoContainer);
+            Core.Core.RecreateUserAsync(twoContainer);
         }
 
         private void Click_ButtomCreate(object sender, RoutedEventArgs e)
@@ -70,7 +71,7 @@ namespace Avrora.Pages
                 second_key = TextBoxSecondKey.Text,
             };
 
-            _ = Core.Core.proxyAvroraAPI.CreateUserAsync(container);
+            Core.Core.CreateUserAsync(container);
         }
 
         private void CLick_ButtonSet(object sender, RoutedEventArgs e)

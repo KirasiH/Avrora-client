@@ -1,86 +1,122 @@
-﻿using System;
+﻿using Avrora.Core.Settings.UserSettings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Avrora.Core.Settings.UserSettings;
-using System.Security.Policy;
-using System.Windows.Markup;
+using Avrora.Core.Settings;
 using Avrora.Core.JsonClassesContainers;
+using System.Collections.ObjectModel;
+using Avrora.Core.AvroraAPI;
 
 namespace Avrora.Core.AvroraAPI
 {
-    public class AvroraAPI : IAvroraAPI
+    public class AvroraAPI
     {
-        private HttpClient client;
-        private string url;
-        public string Url
+        public AvroraAPIMethods avroraAPIMethods;
+
+        public delegate void UserMethodsDelegate(UserSettingsContainer conteiner, string content);
+        public event UserMethodsDelegate? EventUserMethods;
+
+        public delegate void DelegateErrorURLServer(string uri);
+        public event DelegateErrorURLServer? EventErrorURIServer;
+
+        private Settings.Settings settings;
+
+        public string Uri
         {
-            get { return url; }
-            set { url = value; }
+            get { return avroraAPIMethods.Url; }
+            set { avroraAPIMethods.Url = value;}
         }
 
-        public AvroraAPI(string url)
+        public AvroraAPI(string uri, Settings.Settings settings)
         {
-            client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(2);
+            this.settings = settings;
 
-            this.url = url;
-        }
-        private async Task<HttpResponseMessage> UserMethods(string uri, UserSettingsTwoContainer twoContainer, HttpMethod method)
-        {
-            HttpRequestMessage req = new HttpRequestMessage(method, uri);
-
-            req.Content = JsonContent.Create(twoContainer);
-
-            HttpResponseMessage mess = await client.SendAsync(req);
-
-            return mess;
+            avroraAPIMethods = new AvroraAPIMethods(uri);
         }
 
-        private async Task<HttpResponseMessage> UserMethods(string uri, UserSettingsContainer conteiner, HttpMethod method)
+        public void EventChangeActualURI(ApplicationSettingsContainer container)
         {
-            HttpRequestMessage req = new HttpRequestMessage(method, uri);
-
-            req.Content = JsonContent.Create(conteiner);
-
-            HttpResponseMessage mess = await client.SendAsync(req);
-
-            return mess;
+            Uri = container.actualURIServer;
         }
 
-        public async Task<HttpResponseMessage> CreateUserAsync(UserSettingsContainer conteiner)
+        public async Task CreateUserAsync(UserSettingsContainer conteiner)
         {
-            string uriResource = $"{url}/create";
+            HttpResponseMessage mess;
+            try 
+            { 
+                mess = await avroraAPIMethods.CreateUserAsync(conteiner);
+            }
+            catch (Exception ex) when (ex is InvalidOperationException || ex is HttpRequestException || ex is TaskCanceledException){
+                if (EventErrorURIServer != null)
+                    EventErrorURIServer(avroraAPIMethods.Url);
+                return;
+            }
 
-            return await UserMethods(uriResource, conteiner, HttpMethod.Post);
+            string content = await mess.Content.ReadAsStringAsync();
+
+            if (EventUserMethods != null) 
+                EventUserMethods(conteiner, content);
         }
 
-        public async Task<HttpResponseMessage> DeleteUserAsync(UserSettingsContainer conteiner)
+        public async Task DeleteUserAsync(UserSettingsContainer conteiner)
         {
-            string uriResource = $"{url}/delete";
+            HttpResponseMessage mess;
 
-            return await UserMethods(uriResource, conteiner, HttpMethod.Delete);
+            try
+            {
+                mess = await avroraAPIMethods.DeleteUserAsync(conteiner);
+            }
+            catch (Exception ex) when (ex is InvalidOperationException || ex is HttpRequestException || ex is TaskCanceledException)
+            {
+                if (EventErrorURIServer != null)
+                    EventErrorURIServer(avroraAPIMethods.Url);
+                return;
+            }
+
+            string content = await mess.Content.ReadAsStringAsync();
+
+            if (EventUserMethods != null) 
+                EventUserMethods(conteiner, content);
         }
 
-        public async Task<HttpResponseMessage> RecreateUserAsync(UserSettingsTwoContainer twoContainer)
+        public async Task RecreateUserAsync(UserSettingsTwoContainer twoConteiner)
         {
-            string uriResource = $"{url}/recreate";
+            twoConteiner.old_user = settings.userSettings.GetActualUser();
 
-            return await UserMethods(uriResource, twoContainer, HttpMethod.Put);
+            HttpResponseMessage mess;
+
+            try
+            {
+                mess = await avroraAPIMethods.RecreateUserAsync(twoConteiner);
+            }
+            catch (Exception ex) when (ex is InvalidOperationException || ex is HttpRequestException || ex is TaskCanceledException)
+            {
+                if (EventErrorURIServer != null)
+                    EventErrorURIServer(avroraAPIMethods.Url);
+                return;
+            }
+
+            string content = await mess.Content.ReadAsStringAsync();
+
+            if (EventUserMethods != null)
+                EventUserMethods(twoConteiner.new_user, content);
         }
 
-        public async Task RecvUserAsync(UserSettingsContainer conteiner)
+        public Task RecvUserAsync(UserSettingsContainer conteiner)
         {
-            throw new NotImplementedException();
+            Task task = avroraAPIMethods.RecvUserAsync(conteiner);
+
+            return task;
         }
 
-        public async Task SendUserAsync(UserSettingsContainer conteiner)
+        public Task SendUserAsync(UserSettingsContainer conteiner)
         {
-            throw new NotImplementedException();
-        }
+            Task task = avroraAPIMethods.SendUserAsync(conteiner);
 
+            return task;
+        }
     }
 }

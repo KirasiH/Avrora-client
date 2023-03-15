@@ -15,10 +15,10 @@ namespace Avrora.Core.Settings.UserSettings
 {
     public class UserSettingsFields
     {
-        public string? name { get; set; }
-        public string? nickname { get; set; }
-        public string? first_key { get; set; }
-        public string? second_key { get; set; }
+        public string name { get; set; } = "";
+        public string nickname { get; set; } = "";
+        public string first_key { get; set; } = "";
+        public string second_key { get; set; } = "";
     }
 
     public class UserSettings : UserSettingsFields, ISettings
@@ -27,14 +27,14 @@ namespace Avrora.Core.Settings.UserSettings
         private string path_fileSettings = AppDomain.CurrentDomain.BaseDirectory + @"\settings\user\user.json";
 
         private ApplicationSettingsContainer actualServer;
-        private Dictionary<string, UserSettingsContainer> userSettings;
+        private Dictionary<string, UserSettingsContainer> userSettings = new Dictionary<string, UserSettingsContainer>();
 
         public delegate void DelegateChangeUser(UserSettingsContainer container);
-        public event DelegateChangeUser EventChangeActualUser;
+        public event DelegateChangeUser? EventChangeActualUser;
 
         public UserSettings(ApplicationSettingsContainer actServer)
         {
-            actualServer = actServer ?? new ApplicationSettingsContainer() { actualURIServer = "" };
+            actualServer = actServer;
 
             try
             {
@@ -70,7 +70,7 @@ namespace Avrora.Core.Settings.UserSettings
 
             UserSettingsContainer? container = null;
 
-            if (!userSettings.TryGetValue(actualServer.actualURIServer ?? "", out container))
+            if (!userSettings.TryGetValue(actualServer.actualURIServer, out container))
                 return;
 
             SetActualUser(container);
@@ -108,9 +108,10 @@ namespace Avrora.Core.Settings.UserSettings
 
             actualServer = container;
 
-            if (!userSettings.TryGetValue(actualServer.actualURIServer ?? "", out userContainer))
+            if (!userSettings.TryGetValue(actualServer.actualURIServer, out userContainer))
             {
-                return;
+                userSettings.Add(actualServer.actualURIServer, new UserSettingsContainer());
+                userContainer = new UserSettingsContainer();
             }
 
             SetActualUser(userContainer);
@@ -136,7 +137,8 @@ namespace Avrora.Core.Settings.UserSettings
             }
             catch { }
 
-            EventChangeActualUser(userSettings[actualServer.actualURIServer]);
+            if (EventChangeActualUser != null)
+                EventChangeActualUser(userSettings[actualServer.actualURIServer]);
 
             Save();
         }

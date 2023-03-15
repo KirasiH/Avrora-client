@@ -13,7 +13,7 @@ using Avrora.Core.JsonClassesContainers;
 
 namespace Avrora.ViewModel.ViewModelSettings
 {
-    public class ViewModelUserSettingsComponent : IViewModelSettingsComponent, INotifyPropertyChanged
+    public class ViewModelUserSettingsComponent : INotifyPropertyChanged
     {
         public string name;
         public string nickname;

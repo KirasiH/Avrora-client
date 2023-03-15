@@ -8,10 +8,10 @@ namespace Avrora.Core.JsonClassesContainers
 {
     public class UserSettingsContainer
     {
-        public string? name { get; set; }
-        public string? nickname { get; set; }
-        public string? first_key { get; set; }
-        public string? second_key { get; set; }
+        public string name { get; set; } = "";
+        public string nickname { get; set; } = "";
+        public string first_key { get; set; } = ""; 
+        public string second_key { get; set; } = "";
     }
 
 }

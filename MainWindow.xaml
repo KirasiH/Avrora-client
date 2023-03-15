@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="1000"
         Style="{DynamicResource ForWindow}"
-        WindowStyle="None">
+        WindowStyle="None"
+        AllowsTransparency="True">
 
     <Window.Resources>
         <ResourceDictionary  Source="Styles/DarkWindowsStyles.xaml"/>
@@ -90,6 +91,16 @@
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
+            <DockPanel
+                Grid.Row="1">
+
+                <ListBox
+                    Background="Transparent">
+                    
+                </ListBox>
+                
+            </DockPanel>
+            
             <StackPanel x:Name="StackPanelUserListChatGroup" Grid.Row="2" 
                         Style="{DynamicResource ForStackPanelUserListChatGroup}"
                         MouseLeftButtonDown="Click_StackPanelUserListChatGroup"

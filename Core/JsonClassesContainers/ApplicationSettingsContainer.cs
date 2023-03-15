@@ -8,8 +8,8 @@ namespace Avrora.Core.JsonClassesContainers
 {
     public class ApplicationSettingsContainer
     {
-        public string? actualURIServer { get; set; }
+        public string actualURIServer { get; set; } = "";
 
-        public List<string>? listServer{ get; set; }
+        public List<string> listServer { get; set; } = new List<string>();
     }
 }

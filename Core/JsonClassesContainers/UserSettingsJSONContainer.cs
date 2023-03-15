@@ -8,6 +8,6 @@ namespace Avrora.Core.JsonClassesContainers
 {
     class UserSettingsJSONContainer
     {
-        public Dictionary<string, UserSettingsContainer> Settings { get; set; }
+        public Dictionary<string, UserSettingsContainer> Settings { get; set; } = new Dictionary<string, UserSettingsContainer>();
     }
 }
