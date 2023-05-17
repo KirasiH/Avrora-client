@@ -16,7 +16,7 @@ namespace Avrora.Core.AvroraAPI
     {
         public AvroraAPIMethods avroraAPIMethods;
 
-        public delegate void UserMethodsDelegate(UserSettingsContainer conteiner, string content);
+        public delegate void UserMethodsDelegate(UserSettingsContainer conteiner, string context);
         public event UserMethodsDelegate? EventUserMethods;
 
         public delegate void DelegateErrorURLServer(string uri);
@@ -37,7 +37,7 @@ namespace Avrora.Core.AvroraAPI
             avroraAPIMethods = new AvroraAPIMethods(uri);
         }
 
-        public void EventChangeActualURI(ApplicationSettingsContainer container)
+        public void EventChangeActualURI(ServerSettingsContainer container)
         {
             Uri = container.actualURIServer;
         }
@@ -84,7 +84,7 @@ namespace Avrora.Core.AvroraAPI
 
         public async Task RecreateUserAsync(UserSettingsTwoContainer twoConteiner)
         {
-            twoConteiner.old_user = settings.userSettings.GetActualUser();
+            twoConteiner.old_user = settings.GetActualUser();
 
             HttpResponseMessage mess;
 

@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Avrora.Core.JsonClassesContainers;
+using Avrora.ViewModel.ViewModelSettings;
 
 namespace Avrora.Pages
 {
@@ -22,29 +23,22 @@ namespace Avrora.Pages
     /// </summary>
     public partial class PageApplicationSettings : Page
     {
+        private ViewModelSettingsApplicationComponent VMSAC;
         public PageApplicationSettings()
         {
             InitializeComponent();
+
+            VMSAC = (ViewModelSettingsApplicationComponent)Application.Current.Resources["viewModelSettingsApplicationComponent"];
         }
 
         private void Click_AddServer(object sender, RoutedEventArgs e)
         {
-            Core.Core.SetActualServer(TextBoxNameServer.Text);
+            VMSAC.AddServer(TextBoxNameServer.Text);
         }
 
         private void Click_DeleteServer(object sender, RoutedEventArgs e)
         {
-            Core.Core.Settings.applicationSettings.DeleteServer(new ApplicationSettingsContainer() { actualURIServer = TextBlockDeleteServer.Text });
-        }
-
-        private void SelectedChanged(object sender, SelectionChangedEventArgs e) 
-        {
-            if (sender is ComboBox combox)
-            {
-                combox = (ComboBox)sender;
-
-                Core.Core.SetActualServer((string)combox.SelectedItem);
-            }
+            VMSAC.DeleteServer(TextBlockDeleteServer.Text);
         }
     }
 }

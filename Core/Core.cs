@@ -20,18 +20,10 @@ namespace Avrora.Core
 
             Settings = new Settings.Settings();
 
-            AvroraAPI = new AvroraAPI.AvroraAPI(Settings.applicationSettings.actualURIServer, Settings);
+            AvroraAPI = new AvroraAPI.AvroraAPI(Settings.GetActualServer(), Settings);
 
-            AvroraAPI.EventUserMethods += Settings.userSettings.SetActualUser;
-            Settings.applicationSettings.EventChangeActualServer += AvroraAPI.EventChangeActualURI;
-        }
-
-        public static void SetActualServer(string uri)
-        {
-            if (Settings.applicationSettings.actualURIServer == uri && AvroraAPI.Uri == uri)
-                return;
-
-            Settings.applicationSettings.SetActualServer(uri);
+            AvroraAPI.EventUserMethods += Settings.SetActualUser;
+            Settings.EventChangeActualServer += AvroraAPI.EventChangeActualURI;
         }
 
         public static async void CreateUserAsync(UserSettingsContainer container)

@@ -10,7 +10,7 @@
       Title="PageApplicationSettings">
 
     <Grid Background="#35393F"
-          DataContext="{Binding Source={StaticResource viewModelSetting}, Path=ViewModelSettingsApplicationComponent}">
+          DataContext="{StaticResource viewModelSettingsApplicationComponent}">
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
@@ -35,8 +35,17 @@
                               Width="360"
                               FontSize="16"
                               ItemsSource="{Binding Servers}"
-                              SelectedItem="{Binding SelectedServer, Mode=TwoWay}"
-                              SelectionChanged="SelectedChanged"></ComboBox>
+                              SelectedItem="{Binding SelectedServer, Mode=TwoWay}">
+
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        
+                    </ComboBox>
                 </StackPanel>
 
                 <StackPanel Margin="0 10">

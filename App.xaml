@@ -2,9 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Avrora"
-             xmlns:col="clr-namespace:Avrora.ViewModel"
+             xmlns:col="clr-namespace:Avrora.ViewModel.ViewModelSettings"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <col:ViewModelSetting x:Key="viewModelSetting"/>
+        <col:ViewModelSettingsApplicationComponent x:Key="viewModelSettingsApplicationComponent"/>
+        <col:ViewModelUserSettingsComponent x:Key="viewModelUserSettingsComponent"/>
     </Application.Resources>
 </Application>

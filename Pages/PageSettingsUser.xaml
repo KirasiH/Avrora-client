@@ -48,27 +48,27 @@
 
         <StackPanel Grid.Column="1" HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    DataContext="{StaticResource viewModelSetting}">
+                    DataContext="{StaticResource viewModelUserSettingsComponent}">
 
-            <TextBox x:Name="TextBoxName" Text="{Binding ViewModelUserSettingsComponent.Name, Mode=OneWay}" Width="200"
+            <TextBox x:Name="TextBoxName" Text="{Binding Name, Mode=OneWay}" Width="200"
                          Foreground="White"
                          Background="Transparent"
                          FontSize="16"
                          />
 
-            <TextBox x:Name="TextBoxNickname" Text="{Binding ViewModelUserSettingsComponent.Nickname, Mode=OneWay}" Width="200"
+            <TextBox x:Name="TextBoxNickname" Text="{Binding Nickname, Mode=OneWay}" Width="200"
                          Foreground="White"
                          Background="Transparent"
                          FontSize="16"
                          Margin="0 6"/>
 
-            <TextBox x:Name="TextBoxFirstKey" Text="{Binding ViewModelUserSettingsComponent.FirstKey, Mode=OneWay}" Width="200"
+            <TextBox x:Name="TextBoxFirstKey" Text="{Binding FirstKey, Mode=OneWay}" Width="200"
                          Foreground="White"
                          Background="Transparent"
                          Margin="0 6"
                          FontSize="16"/>
 
-            <TextBox x:Name="TextBoxSecondKey" Text="{Binding ViewModelUserSettingsComponent.SecondKey, Mode=OneWay}" Width="200"
+            <TextBox x:Name="TextBoxSecondKey" Text="{Binding SecondKey, Mode=OneWay}" Width="200"
                          Foreground="White"
                          Background="Transparent"
                          FontSize="16"

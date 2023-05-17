@@ -21,31 +21,27 @@ namespace Avrora.Core.Settings.UserSettings
         public string second_key { get; set; } = "";
     }
 
-    public class UserSettings : UserSettingsFields, ISettings
+    public class UserSettings : UserSettingsFields
     {
 
-        private string path_fileSettings = AppDomain.CurrentDomain.BaseDirectory + @"\settings\user\user.json";
+        private string path_fileSettings;
 
-        private ApplicationSettingsContainer actualServer;
+        private string actualServer;
         private Dictionary<string, UserSettingsContainer> userSettings = new Dictionary<string, UserSettingsContainer>();
 
-        public delegate void DelegateChangeUser(UserSettingsContainer container);
-        public event DelegateChangeUser? EventChangeActualUser;
-
-        public UserSettings(ApplicationSettingsContainer actServer)
+        public UserSettings(string actServer, string path_fileSettings)
         {
             actualServer = actServer;
+            this.path_fileSettings = path_fileSettings;
 
             try
             {
                 using (FileStream stream = new FileStream(path_fileSettings, FileMode.Open)) { }
-
             }
             catch (FileNotFoundException)
             {
                 Serializer();
             }
-
 
             Deserialize();
         }
@@ -68,11 +64,14 @@ namespace Avrora.Core.Settings.UserSettings
 
             userSettings = JsonSerializer.Deserialize<Dictionary<string, UserSettingsContainer>>(obj) ?? new Dictionary<string, UserSettingsContainer>();
 
-            UserSettingsContainer? container = null;
+            UserSettingsContainer? container;
 
-            if (!userSettings.TryGetValue(actualServer.actualURIServer, out container))
+            if (!userSettings.TryGetValue(actualServer, out container))
+            {
+                SetActualUser(new UserSettingsContainer());
                 return;
-
+            }
+                
             SetActualUser(container);
         }
 
@@ -82,7 +81,8 @@ namespace Avrora.Core.Settings.UserSettings
                 name = name,
                 nickname = nickname,
                 first_key = first_key,
-                second_key = second_key};
+                second_key = second_key
+            };
         }
 
         public void SetActualUser(UserSettingsContainer container)
@@ -92,53 +92,37 @@ namespace Avrora.Core.Settings.UserSettings
             first_key = container.first_key;
             second_key = container.second_key;
 
-            userSettings[actualServer.actualURIServer] = container;
-
-            if (EventChangeActualUser == null)
-                return;
-
-            EventChangeActualUser(container);
+            userSettings[actualServer] = container;
 
             Save();
         }
 
-        public void SetActualServer(ApplicationSettingsContainer container)
+        public void SetActualServer(string uri)
         {
-            UserSettingsContainer? userContainer = null;
+            UserSettingsContainer? userContainer;
 
-            actualServer = container;
+            actualServer = uri;
 
-            if (!userSettings.TryGetValue(actualServer.actualURIServer, out userContainer))
+            if (!userSettings.TryGetValue(actualServer, out userContainer))
             {
-                userSettings.Add(actualServer.actualURIServer, new UserSettingsContainer());
+                userSettings.Add(actualServer, new UserSettingsContainer());
                 userContainer = new UserSettingsContainer();
             }
 
             SetActualUser(userContainer);
         }
 
-        public void SetActualUser(UserSettingsContainer container, string content)
+        public void DeleteActualUser()
         {
-            if (content == "recreate" || content == "create" )
-                SetActualUser(container);
-            if (content == "delete")
-                DeleteActualUser();
+            userSettings[actualServer] = new UserSettingsContainer();
+
+            Save();
         }
 
-        public void DeleteActualUser(ApplicationSettingsContainer? container = null)
+        public void DeleteServer(string uri)
         {
-            try
-            {
-                if (container == null)
-                    userSettings[actualServer.actualURIServer] = new UserSettingsContainer();
-                else
-                    userSettings[container.actualURIServer] = new UserSettingsContainer();
-
-            }
-            catch { }
-
-            if (EventChangeActualUser != null)
-                EventChangeActualUser(userSettings[actualServer.actualURIServer]);
+            if (userSettings.TryGetValue(uri, out UserSettingsContainer? userContainer))
+                userSettings.Remove(uri);
 
             Save();
         }

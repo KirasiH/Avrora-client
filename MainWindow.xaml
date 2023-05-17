@@ -49,7 +49,6 @@
                             BorderThickness="0"
                             Background="Transparent"
                             Foreground="Gray"
-                            Margin="0,2,0,0" 
                             FontWeight="Bold"
                             Click="ButtonWindowsMinimize"/>
 
@@ -59,8 +58,9 @@
                             BorderThickness="0"
                             Background="Transparent"
                             Foreground="Gray"
-                            Margin="0,4,0,0"
+                            FontSize="16"
                             FontWeight="Bold"
+                            Padding="0 3 0 0"
                             Click="WindowsStateButton"/>
 
                     <Button Content="╳"
@@ -69,7 +69,6 @@
                             BorderThickness="0"
                             Background="Transparent"
                             Foreground="Gray"
-                            Margin="0,3,3,0"
                             FontWeight="Bold"
                             Click="ButtonClose"/>
 
@@ -104,7 +103,7 @@
             <StackPanel x:Name="StackPanelUserListChatGroup" Grid.Row="2" 
                         Style="{DynamicResource ForStackPanelUserListChatGroup}"
                         MouseLeftButtonDown="Click_StackPanelUserListChatGroup"
-                        DataContext="{StaticResource viewModelSetting}">
+                        DataContext="{StaticResource viewModelUserSettingsComponent}">
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Name: "
@@ -112,7 +111,7 @@
                                Foreground="#FAFAFA"
                                Margin="10 3"></TextBlock>
 
-                    <TextBlock Text="{Binding ViewModelUserSettingsComponent.Name}"
+                    <TextBlock Text="{Binding Name}"
                            Margin="0 3 0 0"
                            Foreground="#F5F5F5"
                            FontSize="15"/>
@@ -125,7 +124,7 @@
                                Foreground="#FAFAFA"
                                Margin="10 0"></TextBlock>
 
-                    <TextBlock Text="{Binding ViewModelUserSettingsComponent.Nickname}"
+                    <TextBlock Text="{Binding Nickname}"
                            Margin="0 0 0 0"
                            Foreground="#F5F5F5"
                            FontSize="15"/>

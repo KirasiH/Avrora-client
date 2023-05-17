@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Avrora.Core.JsonClassesContainers;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,30 +11,85 @@ namespace Avrora.Core.Settings
 {
     public class Settings
     {
-        public UserSettings.UserSettings userSettings;
-        public ApplicationSettings.ApplicationSettings applicationSettings;
+        public delegate void DelegateChangeActualServer(ServerSettingsContainer container);
+        public event DelegateChangeActualServer? EventChangeActualServer;
 
-        public Settings() {
+        public delegate void DelegateDeleteActualServer(ServerSettingsContainer container);
+        public event DelegateDeleteActualServer? EventDeleteActualServer;
 
-            DirectoryInfo dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/settings");
-            DirectoryInfo dirUserSettings = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/settings/user");
-            DirectoryInfo dirApplication = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/settings/application");
+        public delegate void DelegateChangeUser(UserSettingsContainer container);
+        public event DelegateChangeUser? EventChangeActualUser;
 
-            if (!dir.Exists)
-                dir.Create();
+        private string pathUserSettings = AppDomain.CurrentDomain.BaseDirectory + @"\settings\user\user.json";
+        private string pathServerSettings = AppDomain.CurrentDomain.BaseDirectory + @"\settings\application\application.json";
 
-            if (!dirUserSettings.Exists)
-                dirUserSettings.Create();
+        private UserSettings.UserSettings userSettings { get; set; }
+        private ApplicationSettings.ServerSettings serverSettings { get; set; }
 
-            if (!dirApplication.Exists)
-                dirApplication.Create();
+        public Settings() 
+        {
+            serverSettings = new ServerSettings(pathServerSettings);
+            userSettings = new UserSettings.UserSettings(serverSettings.GetActualServer(), pathUserSettings);
+        }
 
-            applicationSettings = new ApplicationSettings.ApplicationSettings();
+        public void SetActualServer(string uri)
+        {
+            serverSettings.SetActualServer(uri);
+            userSettings.SetActualServer(serverSettings.GetActualServer());
 
-            userSettings = new UserSettings.UserSettings(applicationSettings.GetActualServer());
+            if (EventChangeActualServer!= null)
+                EventChangeActualServer(serverSettings.GetCofigServers());
+            
+            if (EventChangeActualUser != null) 
+                EventChangeActualUser(userSettings.GetActualUser());
+        }
 
-            applicationSettings.EventChangeActualServer += userSettings.SetActualServer;
-            applicationSettings.EventDeleteActualServer += userSettings.DeleteActualUser;
+        public void DeleteServer(string uri)
+        {
+            serverSettings.DeleteServer(uri);
+            userSettings.DeleteServer(serverSettings.GetActualServer());
+
+            if (EventDeleteActualServer != null)
+                EventDeleteActualServer(serverSettings.GetCofigServers());
+
+            if (EventChangeActualUser != null)
+                EventChangeActualUser(new UserSettingsContainer());
+        }
+
+        public string GetActualServer()
+        {
+            return serverSettings.GetActualServer();
+        }
+
+        public ServerSettingsContainer GetConfigServer()
+        {
+            return serverSettings.GetCofigServers();
+        }
+
+        public void SetActualUser(UserSettingsContainer container)
+        {
+            userSettings.SetActualUser(container);
+
+            if (EventChangeActualUser != null)
+                EventChangeActualUser(userSettings.GetActualUser());
+        }
+
+        public void SetActualUser(UserSettingsContainer container, string context)
+        {
+            SetActualUser(container);
+        }
+
+        public void DelActualUser(UserSettingsContainer container) 
+        {
+            userSettings.DeleteActualUser();
+
+            if (EventChangeActualUser != null)
+                EventChangeActualUser(new UserSettingsContainer());
+        }
+
+        public UserSettingsContainer GetActualUser()
+        {
+            return userSettings.GetActualUser();
         }
     }
 }

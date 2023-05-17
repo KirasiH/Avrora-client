@@ -84,7 +84,7 @@ namespace Avrora.Pages
                 second_key = TextBoxSecondKey.Text,
             };
 
-            Core.Core.Settings.userSettings.SetActualUser(container);
+            Core.Core.Settings.SetActualUser(container);
         }
 
         public void EventUserMethods(UserSettingsContainer conteiner, string content)
