@@ -12,8 +12,16 @@ using Avrora.Core.JsonClassesContainers;
 
 namespace Avrora.ViewModel.ViewModelSettings
 {
+    enum StateViewModel
+    {
+        ChangeAfterEvent,
+        ChangeAfterView,
+    }
+
     public class ViewModelSettingsApplicationComponent : INotifyPropertyChanged
     {
+        private StateViewModel state;
+
         public ObservableCollection<string> servers;
         public ObservableCollection<string> Servers
         {
@@ -32,7 +40,11 @@ namespace Avrora.ViewModel.ViewModelSettings
             set
             {
                 selected = value;
-                Core.Core.Settings.SetActualServer(selected);
+                if (state == StateViewModel.ChangeAfterView)
+                {
+                    Core.Core.Settings.SetActualServer(selected);
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -53,19 +65,24 @@ namespace Avrora.ViewModel.ViewModelSettings
 
         public void ChangeServer(ServerSettingsContainer container)
         {
-            if (container.actualURIServer == selected)
-                return;
+            state = StateViewModel.ChangeAfterEvent;
 
             Servers = new ObservableCollection<string>(container.listServer);
 
             SelectedServer = container.actualURIServer;
+
+            state = StateViewModel.ChangeAfterView;
         }
 
         public void DeleteServer(ServerSettingsContainer container)
         {
+            state = StateViewModel.ChangeAfterEvent;
+
             Servers = new ObservableCollection<string>(container.listServer);
 
             SelectedServer = " ";
+
+            state = StateViewModel.ChangeAfterView;
         }
 
         public void DeleteServer(string uri)
