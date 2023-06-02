@@ -42,7 +42,7 @@ namespace Avrora.ViewModel.ViewModelSettings
                 selected = value;
                 if (state == StateViewModel.ChangeAfterView)
                 {
-                    Core.Core.Settings.SetActualServer(selected);
+                    Core.Core.SetActualServer(selected);
                 }
 
                 OnPropertyChanged();
@@ -50,10 +50,10 @@ namespace Avrora.ViewModel.ViewModelSettings
         }
         public ViewModelSettingsApplicationComponent() 
         {
-            Core.Core.Settings.EventChangeActualServer += ChangeServer;
-            Core.Core.Settings.EventDeleteActualServer += DeleteServer;
+            Core.Core.EventChangeActualServer += ChangeServer;
+            Core.Core.EventDeleteActualServer += DeleteServer;
 
-            ChangeServer(Core.Core.Settings.GetConfigServer());
+            ChangeServer(Core.Core.GetConfigServers());
         }
 
         public void AddServer(string uri)
@@ -87,7 +87,7 @@ namespace Avrora.ViewModel.ViewModelSettings
 
         public void DeleteServer(string uri)
         {
-            Core.Core.Settings.DeleteServer(uri);
+            Core.Core.DeleteServer(uri);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

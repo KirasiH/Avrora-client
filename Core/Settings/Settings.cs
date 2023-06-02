@@ -6,54 +6,58 @@ using System.Text;
 using System.Threading.Tasks;
 using Avrora.Core.Settings.ApplicationSettings;
 using Avrora.Core.Settings.UserSettings;
+using Avrora.Core.Settings.ChatSettings;
+using System.IO;
 
 namespace Avrora.Core.Settings
 {
     public class Settings
     {
-        public delegate void DelegateChangeActualServer(ServerSettingsContainer container);
-        public event DelegateChangeActualServer? EventChangeActualServer;
 
-        public delegate void DelegateDeleteActualServer(ServerSettingsContainer container);
-        public event DelegateDeleteActualServer? EventDeleteActualServer;
-
-        public delegate void DelegateChangeUser(UserSettingsContainer container);
-        public event DelegateChangeUser? EventChangeActualUser;
-
-        private string pathUserSettings = AppDomain.CurrentDomain.BaseDirectory + @"\settings\user\user.json";
-        private string pathServerSettings = AppDomain.CurrentDomain.BaseDirectory + @"\settings\application\application.json";
+        private string pathSettings = AppDomain.CurrentDomain.BaseDirectory + @"settings\";
+        private string pathUserSettings = AppDomain.CurrentDomain.BaseDirectory + @"settings\user\";
+        private string pathServerSettings = AppDomain.CurrentDomain.BaseDirectory + @"settings\application\";
+        private string pathChatSettings = AppDomain.CurrentDomain.BaseDirectory + @"settings\chat\";
 
         private UserSettings.UserSettings userSettings { get; set; }
         private ApplicationSettings.ServerSettings serverSettings { get; set; }
 
+        private ChatSettings.ChatSettings chatSettings { get; set; }
+
         public Settings() 
         {
+            DirectoryInfo settings = new DirectoryInfo(pathSettings);
+            DirectoryInfo settings_app = new DirectoryInfo(pathServerSettings);
+            DirectoryInfo settings_user = new DirectoryInfo(pathUserSettings);
+            DirectoryInfo settings_chat = new DirectoryInfo(pathChatSettings);
+
+            if (!settings.Exists)
+                settings.Create();
+
+            if (!settings_app.Exists)
+                settings_app.Create();
+
+            if (!settings_user.Exists)
+                settings_user.Create();
+
+            if (!settings_chat.Exists)
+                settings_chat.Create();
+
             serverSettings = new ServerSettings(pathServerSettings);
             userSettings = new UserSettings.UserSettings(serverSettings.GetActualServer(), pathUserSettings);
+            chatSettings = new ChatSettings.ChatSettings(pathChatSettings);
         }
 
         public void SetActualServer(string uri)
         {
             serverSettings.SetActualServer(uri);
             userSettings.SetActualServer(serverSettings.GetActualServer());
-
-            if (EventChangeActualServer!= null)
-                EventChangeActualServer(serverSettings.GetCofigServers());
-            
-            if (EventChangeActualUser != null) 
-                EventChangeActualUser(userSettings.GetActualUser());
         }
 
         public void DeleteServer(string uri)
         {
             serverSettings.DeleteServer(uri);
             userSettings.DeleteServer(serverSettings.GetActualServer());
-
-            if (EventDeleteActualServer != null)
-                EventDeleteActualServer(serverSettings.GetCofigServers());
-
-            if (EventChangeActualUser != null)
-                EventChangeActualUser(new UserSettingsContainer());
         }
 
         public string GetActualServer()
@@ -61,7 +65,7 @@ namespace Avrora.Core.Settings
             return serverSettings.GetActualServer();
         }
 
-        public ServerSettingsContainer GetConfigServer()
+        public ServerSettingsContainer GetConfigServers()
         {
             return serverSettings.GetCofigServers();
         }
@@ -69,9 +73,6 @@ namespace Avrora.Core.Settings
         public void SetActualUser(UserSettingsContainer container)
         {
             userSettings.SetActualUser(container);
-
-            if (EventChangeActualUser != null)
-                EventChangeActualUser(userSettings.GetActualUser());
         }
 
         public void SetActualUser(UserSettingsContainer container, string context)
@@ -82,9 +83,6 @@ namespace Avrora.Core.Settings
         public void DelActualUser(UserSettingsContainer container) 
         {
             userSettings.DeleteActualUser();
-
-            if (EventChangeActualUser != null)
-                EventChangeActualUser(new UserSettingsContainer());
         }
 
         public UserSettingsContainer GetActualUser()

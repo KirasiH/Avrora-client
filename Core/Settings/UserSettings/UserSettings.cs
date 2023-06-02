@@ -32,11 +32,11 @@ namespace Avrora.Core.Settings.UserSettings
         public UserSettings(string actServer, string path_fileSettings)
         {
             actualServer = actServer;
-            this.path_fileSettings = path_fileSettings;
+            this.path_fileSettings = path_fileSettings + "user.json";
 
             try
             {
-                using (FileStream stream = new FileStream(path_fileSettings, FileMode.Open)) { }
+                using (FileStream stream = new FileStream(this.path_fileSettings, FileMode.Open)) { }
             }
             catch (FileNotFoundException)
             {

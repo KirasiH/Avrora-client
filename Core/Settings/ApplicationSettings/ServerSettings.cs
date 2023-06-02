@@ -23,11 +23,11 @@ namespace Avrora.Core.Settings.ApplicationSettings
 
         public ServerSettings(string path_fileApplication) 
         {
-            this.path_fileApplication = path_fileApplication;
+            this.path_fileApplication = path_fileApplication + "application.json";
 
             try
             {
-                using (FileStream stream = new FileStream(path_fileApplication, FileMode.Open)) { }
+                using (FileStream stream = new FileStream(this.path_fileApplication, FileMode.Open)) { }
             }
             catch (FileNotFoundException)
             {

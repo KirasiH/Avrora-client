@@ -16,12 +16,6 @@ namespace Avrora.Core.AvroraAPI
     {
         public AvroraAPIMethods avroraAPIMethods;
 
-        public delegate void UserMethodsDelegate(UserSettingsContainer conteiner, string context);
-        public event UserMethodsDelegate? EventUserMethods;
-
-        public delegate void DelegateErrorURLServer(string uri);
-        public event DelegateErrorURLServer? EventErrorURIServer;
-
         private Settings.Settings settings;
 
         public string Uri
@@ -37,52 +31,41 @@ namespace Avrora.Core.AvroraAPI
             avroraAPIMethods = new AvroraAPIMethods(uri);
         }
 
-        public void EventChangeActualURI(ServerSettingsContainer container)
+        public void ChangeActualURI(ServerSettingsContainer container)
         {
             Uri = container.actualURIServer;
         }
 
-        public async Task CreateUserAsync(UserSettingsContainer conteiner)
+        public async Task<HttpResponseMessage> CreateUserAsync(UserSettingsContainer conteiner)
         {
             HttpResponseMessage mess;
             try 
             { 
                 mess = await avroraAPIMethods.CreateUserAsync(conteiner);
+
+                return mess;
             }
             catch (Exception ex) when (ex is InvalidOperationException || ex is HttpRequestException || ex is TaskCanceledException){
-                if (EventErrorURIServer != null)
-                    EventErrorURIServer(avroraAPIMethods.Url);
-                return;
+                return null;
             }
-
-            string content = await mess.Content.ReadAsStringAsync();
-
-            if (EventUserMethods != null) 
-                EventUserMethods(conteiner, content);
         }
 
-        public async Task DeleteUserAsync(UserSettingsContainer conteiner)
+        public async Task<HttpResponseMessage> DeleteUserAsync(UserSettingsContainer conteiner)
         {
             HttpResponseMessage mess;
-
             try
             {
                 mess = await avroraAPIMethods.DeleteUserAsync(conteiner);
+
+                return mess;
             }
             catch (Exception ex) when (ex is InvalidOperationException || ex is HttpRequestException || ex is TaskCanceledException)
             {
-                if (EventErrorURIServer != null)
-                    EventErrorURIServer(avroraAPIMethods.Url);
-                return;
+                return null;
             }
-
-            string content = await mess.Content.ReadAsStringAsync();
-
-            if (EventUserMethods != null) 
-                EventUserMethods(conteiner, content);
         }
 
-        public async Task RecreateUserAsync(UserSettingsTwoContainer twoConteiner)
+        public async Task<HttpResponseMessage> RecreateUserAsync(UserSettingsTwoContainer twoConteiner)
         {
             twoConteiner.old_user = settings.GetActualUser();
 
@@ -91,18 +74,13 @@ namespace Avrora.Core.AvroraAPI
             try
             {
                 mess = await avroraAPIMethods.RecreateUserAsync(twoConteiner);
+
+                return mess;
             }
             catch (Exception ex) when (ex is InvalidOperationException || ex is HttpRequestException || ex is TaskCanceledException)
             {
-                if (EventErrorURIServer != null)
-                    EventErrorURIServer(avroraAPIMethods.Url);
-                return;
+                return null;
             }
-
-            string content = await mess.Content.ReadAsStringAsync();
-
-            if (EventUserMethods != null)
-                EventUserMethods(twoConteiner.new_user, content);
         }
 
         public Task RecvUserAsync(UserSettingsContainer conteiner)

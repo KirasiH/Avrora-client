@@ -28,8 +28,8 @@ namespace Avrora.Pages
         {
             InitializeComponent();
 
-            Core.Core.AvroraAPI.EventUserMethods += EventUserMethods;
-            Core.Core.AvroraAPI.EventErrorURIServer += ErrorURIServer;
+            Core.Core.EventUserMethods += EventUserMethods;
+            Core.Core.EventErrorURIServer += ErrorURIServer;
         }
 
         private void Click_ButtonDelete(object sender, RoutedEventArgs e)
@@ -84,7 +84,7 @@ namespace Avrora.Pages
                 second_key = TextBoxSecondKey.Text,
             };
 
-            Core.Core.Settings.SetActualUser(container);
+            Core.Core.SetActualUser(container);
         }
 
         public void EventUserMethods(UserSettingsContainer conteiner, string content)

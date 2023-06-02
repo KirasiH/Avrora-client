@@ -24,7 +24,7 @@ namespace Avrora.ViewModel.ViewModelSettings
         {
             ChangeAttridutes(Core.Core.Settings.GetActualUser());
 
-            Core.Core.Settings.EventChangeActualUser += ChangeAttridutes;
+            Core.Core.EventChangeActualUser += ChangeAttridutes;
         }
 
         public string Name
