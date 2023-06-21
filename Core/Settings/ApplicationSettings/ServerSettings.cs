@@ -16,25 +16,22 @@ namespace Avrora.Core.Settings.ApplicationSettings
 
         public List<string> listServer { get; set; } = new List<string>();
     }
-
     public class ServerSettings : ApplicationSettingsFields
     {
         private string path_fileApplication;
 
-        public ServerSettings(string path_fileApplication) 
+        public ServerSettings(string path) 
         {
-            this.path_fileApplication = path_fileApplication + "application.json";
+            this.path_fileApplication = path + "application.json";
 
-            try
-            {
-                using (FileStream stream = new FileStream(this.path_fileApplication, FileMode.Open)) { }
-            }
-            catch (FileNotFoundException)
-            {
+            DirectoryInfo dirinfo = new DirectoryInfo(path);
+
+            if (!dirinfo.Exists) {
+                dirinfo.Create();
                 Serializer();
+            } else {
+                Deserialize();
             }
-
-            Deserialize();
         }
 
         public void SetActualServer(string uri)

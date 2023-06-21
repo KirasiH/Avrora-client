@@ -29,6 +29,12 @@ namespace Avrora.Core
         public delegate void DelegateErrorURLServer(string uri);
         public static event DelegateErrorURLServer? EventErrorURIServer;
 
+        public delegate void DelegateRecvMessage(ServerRecvMessageContainer container);
+        public static event DelegateRecvMessage? EventRecvMessage;
+
+        public delegate void DelegateSendMessage(ServerSendMessageContainer container);
+        public static event DelegateSendMessage? EventSendMessage;
+
         public static Settings.Settings Settings { get; private set; }
         public static AvroraAPI.AvroraAPI AvroraAPI { get; private set; }
 

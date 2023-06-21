@@ -93,7 +93,7 @@
             <DockPanel
                 Grid.Row="1">
 
-                <ListBox
+                <ListBox x:Name="ListChats"
                     Background="Transparent">
                     
                 </ListBox>
@@ -198,13 +198,18 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition Height="45"/>
+                <RowDefinition Height="55"/>
             </Grid.RowDefinitions>
+
+            <StackPanel>
+                <ListBox x:Name="ListMassage"></ListBox>
+            </StackPanel>
 
             <DockPanel Grid.Row="1"
                        VerticalAlignment="Top"
                        Height="40"
-                       LastChildFill="True">
+                       LastChildFill="True"
+                       Margin="0 7">
 
                 <Button DockPanel.Dock="Left"
                         Content="File" Width="50"

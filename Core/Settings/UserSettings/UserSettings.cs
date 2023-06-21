@@ -29,21 +29,19 @@ namespace Avrora.Core.Settings.UserSettings
         private string actualServer;
         private Dictionary<string, UserSettingsContainer> userSettings = new Dictionary<string, UserSettingsContainer>();
 
-        public UserSettings(string actServer, string path_fileSettings)
+        public UserSettings(string actServer, string path)
         {
             actualServer = actServer;
-            this.path_fileSettings = path_fileSettings + "user.json";
+            this.path_fileSettings = path + "user.json";
 
-            try
-            {
-                using (FileStream stream = new FileStream(this.path_fileSettings, FileMode.Open)) { }
-            }
-            catch (FileNotFoundException)
-            {
+            DirectoryInfo dirinfo = new DirectoryInfo(path);
+
+            if (!dirinfo.Exists) {
+                dirinfo.Create();
                 Serializer();
+            } else {
+                Deserialize();
             }
-
-            Deserialize();
         }
 
         private void Serializer()
