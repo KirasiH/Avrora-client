@@ -1,0 +1,136 @@
+﻿<Page x:Class="Avrora.Pages.PageChatsSettings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Avrora.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PageChatsSettings">
+
+    <Grid Background="#35393F"
+          DataContext="{StaticResource viewModelChatSettings}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="57"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0"
+                    Background="#35393F">
+
+            <ListBox x:Name="ChatSettingsList"
+                     Padding="5"
+                     Background="#35393F"
+                     BorderBrush="#35393F"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ItemsSource="{Binding Chats}">
+                
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Focusable" Value="False"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+               
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Grid x:Name="DataTemplateGrid"
+                              Margin="0 10 0 0">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Vertical"
+                                        Margin="0 0 0 0">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Name: "
+                                               Style="{DynamicResource ResourceKey=StyleForPageChatsSettingsTextBlock}"></TextBlock>
+                                    <TextBlock Text="{Binding Name}"
+                                               Style="{DynamicResource ResourceKey=StyleForPageChatsSettingsTextBlock}"></TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Nickname: "
+                                               Style="{DynamicResource ResourceKey=StyleForPageChatsSettingsTextBlock}"></TextBlock>
+                                    <TextBlock Text="{Binding Nickname}"
+                                               Style="{DynamicResource ResourceKey=StyleForPageChatsSettingsTextBlock}"></TextBlock>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                            <DockPanel Grid.Row="1">
+
+                                <StackPanel Orientation="Vertical" Margin="0 0 10 10">
+                                    <TextBlock Text="Save files path: "
+                                               Style="{DynamicResource ResourceKey=StyleForPageChatsSettingsTextBlock}"/>
+                                    <TextBlock Text="{Binding PathSaveFiles}"
+                                               TextWrapping="Wrap"
+                                               Style="{DynamicResource ResourceKey=StyleForPageChatsSettingsTextBlock}"
+                                               Margin="10 0 0 0"/>
+
+                                </StackPanel>
+
+                            </DockPanel>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                <Button Content="Change path"
+                                        HorizontalAlignment="Left"
+                                        FontSize="16"
+                                        Width="150"
+                                        Height="25"
+                                        Margin="0 0 10 0"
+                                        Click="ChangePathFileButton_CLick"></Button>
+                                
+                                <Button Content="Cange key"
+                                        HorizontalAlignment="Left"
+                                        FontSize="16"
+                                        Width="150"
+                                        Height="25"
+                                        Margin="0 0 10 0"
+                                        Click="ChangeKeyButton_CLick"></Button>
+
+                                <Button Content="Delete"
+                                        Width="150"
+                                        Height="25"
+                                        HorizontalAlignment="Left"
+                                        Background="Red"
+                                        Foreground="Black"
+                                        FontSize="16"
+                                        Click="DeleteButton_Click"/>
+                            </StackPanel>
+
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ListBox>    
+        </DockPanel>
+        
+        <DockPanel Grid.Row="1"
+                    FlowDirection="RightToLeft">
+
+            <Button Content="Add"
+                    Background="#202021"
+                    Foreground="White"
+                    FontSize="16"
+                    Margin="10 10 10 3"
+                    Height="42"
+                    Width="100"
+                    Click="ButtonAdd_Click"/>
+
+            <TextBox x:Name="TextBoxChatName"
+                     VerticalContentAlignment="Center"
+                     FlowDirection="LeftToRight"
+                     FontSize="16"
+                     Background="#34363F"
+                     Foreground="White"
+                     Margin="0 10 10 3"
+                     Height="42">
+            </TextBox>
+        </DockPanel>
+    </Grid>
+</Page>

@@ -11,10 +11,6 @@
         WindowStyle="None"
         AllowsTransparency="True">
 
-    <Window.Resources>
-        <ResourceDictionary  Source="Styles/DarkWindowsStyles.xaml"/>
-    </Window.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -134,7 +130,7 @@
         </Grid>
 
         <Grid x:Name="ListSettingsGrid" Grid.Row="1" Grid.Column="0"
-              Visibility="Hidden"
+              Visibility="Visible"
               Style="{DynamicResource ForListSettingsGrid}">
 
             <Grid.RowDefinitions>
@@ -184,6 +180,7 @@
                             Background="Transparent"
                             Foreground="White"
                             FontSize="16"
+                            Click="Click_SettingsButton"
                             />
 
                 </StackPanel>
@@ -193,7 +190,7 @@
         </Grid>
 
         <Grid x:Name="ChatGridBlock"  Grid.Column="2" Grid.Row="1"
-              Visibility="Visible"
+              Visibility="Hidden"
               >
 
             <Grid.RowDefinitions>
@@ -230,7 +227,7 @@
         </Grid>
 
         <Grid x:Name="SettingsGridBlock" Grid.Column="2" Grid.Row="1"
-              Visibility="Hidden">
+              Visibility="Visible">
 
             <Frame x:Name="SettingsFrame"
                    HorizontalAlignment="Stretch"

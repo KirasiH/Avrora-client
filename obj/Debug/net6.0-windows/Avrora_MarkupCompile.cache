@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\App.xaml
-4-756409113
+6140766794
 
-25-1903721662
-194237474483
-MainWindow.xaml;Pages\PageApplicationSettings.xaml;Pages\PageSettingsUser.xaml;Styles\DarkWindowsStyles.xaml;
+29471951661
+2031577854355
+MainWindow.xaml;Pages\PageApplicationSettings.xaml;Pages\PageChatsSettings.xaml;Pages\PageSettingsUser.xaml;Styles\DarkWindowsStyles.xaml;Windows\ChangeKeyWindows.xaml;
 
 False
 

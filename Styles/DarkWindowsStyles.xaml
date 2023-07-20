@@ -41,4 +41,81 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
 
+    <Style x:Key="StyleForPageChatsSettingsTextBlock" TargetType="TextBlock">
+        <Style.Setters>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="ScrollBarPageButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid Background="Transparent"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border
+                            Background="#1a1b1c"
+                            CornerRadius="8">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="ScrollBarTemplate" TargetType="{x:Type ScrollBar}">
+
+        <Grid Width="10"
+                  Background="#2b2d31">
+
+            <Track Name="PART_Track" Grid.Row="1" 
+                   IsDirectionReversed="True">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton Command="ScrollBar.PageUpCommand" Style="{StaticResource ScrollBarPageButtonStyle}">
+                    </RepeatButton>
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource ScrollBarThumbStyle}">
+                    </Thumb>
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton Command="ScrollBar.PageDownCommand" Style="{StaticResource ScrollBarPageButtonStyle}">
+                    </RepeatButton>
+                </Track.IncreaseRepeatButton>
+            </Track>
+
+        </Grid>
+
+    </ControlTemplate>
+
+    <Style TargetType="ScrollBar">
+        <Setter Property="Template" Value="{StaticResource ScrollBarTemplate}"/>
+    </Style>
+
+    <Style x:Key="ChangeKeyWindow" TargetType="Window">
+        <Setter Property="Background" Value="#35393F"/>
+    </Style>
+
+    <Style x:Key="ChangeKeyWindowForTextBoxKey" TargetType="TextBox">
+        <Setter Property="Background" Value="#34363F"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="ChangeKeyWindowForButtonOkCancel" TargetType="Button">
+        <Setter Property="Background" Value="#25252C"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
 </ResourceDictionary>

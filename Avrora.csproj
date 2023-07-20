@@ -5,11 +5,8 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+	 <UseWindowsForms>true</UseWindowsForms>
     <StartupObject>Avrora.Program</StartupObject>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModel\ViewModelChat\" />
-  </ItemGroup>
 
 </Project>

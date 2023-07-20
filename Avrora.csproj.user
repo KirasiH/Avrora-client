@@ -10,7 +10,13 @@
     <Compile Update="Pages\PageApplicationSettings.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\PageChatsSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\PageSettingsUser.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Windows\ChangeKeyWindows.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -21,10 +27,16 @@
     <Page Update="Pages\PageApplicationSettings.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\PageChatsSettings.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\PageSettingsUser.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\DarkWindowsStyles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\ChangeKeyWindows.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

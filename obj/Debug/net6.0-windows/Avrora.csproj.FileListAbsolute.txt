@@ -108,3 +108,7 @@ C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net
 C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Avrora.csproj.CoreCompileInputs.cache
 C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Avrora.genruntimeconfig.cache
 C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\ref\Avrora.dll
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Pages\PageChatsSettings.g.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Pages\PageChatsSettings.baml
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Windows\ChangeKeyWindows.g.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Windows\ChangeKeyWindows.baml

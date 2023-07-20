@@ -30,9 +30,7 @@ namespace Avrora
         private void BorderMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
-            {
                 DragMove();
-            }
         }
 
         private void ButtonWindowsMinimize(object sender, RoutedEventArgs e)
@@ -79,6 +77,13 @@ namespace Avrora
                 SettingsFrame.Navigate(new PageSettingsUser());
             else if (btn.Name == "ApplicationButton")
                 SettingsFrame.Navigate(new PageApplicationSettings());
+            else if (btn.Name == "ChatButton")
+                SettingsFrame.Navigate(new PageChatsSettings());
+        }
+
+        private void ChatButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
