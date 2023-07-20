@@ -61,6 +61,10 @@ namespace Avrora.Core.Settings.ChatSettings
         {
             actualServerChatsSettings.SetQuentity(nickname, quentity);
         }
+        public void AddEncryptingKey(string nickname, string key)
+        {
+            actualServerChatsSettings.AddEncryptingKey(nickname, key);
+        }
         public void AddChat(string nickname)
         {
             actualServerChatsSettings.AddChat(nickname);

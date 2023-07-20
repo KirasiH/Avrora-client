@@ -16,6 +16,7 @@ namespace Avrora.Core.Settings.ChatSettings
         public void SetPathSave(string nickname, string path);
         public void SetTimeClear(string nickname, DateTime date);
         public void SetQuentity(string nickname, int quentity);
+        public void AddEncryptingKey(string nickname, string key);
         public void AddChat(string nickname);
         public List<Message>? GetMessages(string nickname);
         public List<ChatContainer>? GetChats();
@@ -46,6 +47,7 @@ namespace Avrora.Core.Settings.ChatSettings
         public void SetPathSave(string nickname, string path) { }
         public void SetQuentity(string nickname, int quentity) { }
         public void SetTimeClear(string nickname, DateTime date) { }
+        public void AddEncryptingKey(string nickname, string key) { }
     }
     public class ServerChatsSettings : IServerChatsSettings
     {
@@ -104,6 +106,12 @@ namespace Avrora.Core.Settings.ChatSettings
             ChatSettings chatSettings = NicknameAndChatSettings[nickname];
 
             chatSettings.SetQuentity(quentity);
+        }
+        public void AddEncryptingKey(string nickname, string key)
+        {
+            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
+
+            chatSettings.AddEncryptingKey(key);
         }
         public void AddChat(string nickname)
         {

@@ -19,6 +19,7 @@ namespace Avrora.Core.Settings.ChatSettings
         public string? clear_date { get; set; }
         public int? id { get; set; }
         public string? name { get; set; }
+        public string? encrypting_key { get; set; } 
     }
     public class ChatSettingsMemento
     {
@@ -26,9 +27,6 @@ namespace Avrora.Core.Settings.ChatSettings
     }
     public class ChatSettings
     {
-        private AutoResetEvent resertEventForChatSettings = new AutoResetEvent(true);
-        private AutoResetEvent resertEventForChatConfig = new AutoResetEvent(true);
-
         private string format_time = "yyyyMMddTHH:mm:ssZ";
         private CultureInfo culture_info = CultureInfo.InvariantCulture;
         private DateTime clear_date = DateTime.UtcNow.AddMonths(-6);
@@ -36,6 +34,8 @@ namespace Avrora.Core.Settings.ChatSettings
         private List<Message> messages = new List<Message>();
 
         private string name;
+
+        private string encrypting_key = "YourFirstKey";
 
         private string path_fileChatSettings;
         private string path_fileConfigSettings;
@@ -246,6 +246,12 @@ namespace Avrora.Core.Settings.ChatSettings
 
             return list_messages;
         }
+        public void AddEncryptingKey(string key)
+        { 
+            encrypting_key = key;
+
+            SerializeConfig();
+        }
         private bool IsSave(string type)
         {
             if (type == "photo")
@@ -272,7 +278,8 @@ namespace Avrora.Core.Settings.ChatSettings
                 path_save_files = path_save_files,
                 clear_date = clear_date.ToString(format_time, culture_info),
                 id = id,
-                name = name
+                name = name,
+                encrypting_key = encrypting_key,
             });
 
             using (StreamWriter writer = new StreamWriter(path_fileConfigSettings))
@@ -313,6 +320,7 @@ namespace Avrora.Core.Settings.ChatSettings
             quentity = memento.quentity ?? quentity;
             id = memento.id ?? id;
             name = memento.name ?? name;
+            encrypting_key = memento.encrypting_key ?? encrypting_key;
 
             if (memento.clear_date != null)
             {

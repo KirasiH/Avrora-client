@@ -93,7 +93,7 @@ namespace Avrora.ViewModel.ViewModelChat
         }      
         public void SetEncruptingKey(string encruptingKey)
         {
-            
+            Core.Core.Settings.AddEncryptingKey(nickname, encruptingKey);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
