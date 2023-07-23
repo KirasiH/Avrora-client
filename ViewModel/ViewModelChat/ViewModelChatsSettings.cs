@@ -1,4 +1,5 @@
-﻿using Avrora.Core.JsonClassesContainers;
+﻿using Avrora.Core;
+using Avrora.Core.JsonClassesContainers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,23 @@ namespace Avrora.ViewModel.ViewModelChat
     public class ViewModelChatsSettings : INotifyPropertyChanged
     {
         private ObservableCollection<Chat> chats = new ObservableCollection<Chat>();
+        private Chat? chat;
+        public Chat Chat
+        {
+            get { return chat; }
+            set 
+            {
+                if (chat != null)
+                    chat.Selection = false;
 
+                if (value != null)
+                    value.Selection= true;
+
+                chat = value;
+
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<Chat> Chats
         {
             get { return chats; }
@@ -24,9 +41,10 @@ namespace Avrora.ViewModel.ViewModelChat
                 OnPropertyChanged();
             }
         }
-
         public ViewModelChatsSettings()
         {
+            Core.Core.EventChangeActualServer += ChangeActualServer;
+
             TakeChats();
         }
 
@@ -38,22 +56,27 @@ namespace Avrora.ViewModel.ViewModelChat
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
             }
         }
-
         public void AddChat(string nickname)
         {
             Core.Core.Settings.AddChat(nickname);
 
             TakeChats();
         }
-
+        public void SendMessage(string data, IsSendMessage isSend)
+        {
+            chat?.SendMessage(data, isSend);
+        }
+        public void ChangeActualServer(ServerSettingsContainer container)
+        {
+            TakeChats();
+        }
         private void TakeChats()
         {
-            List<ChatContainer>? list_chats = Core.Core.Settings.GetChats();
+            List<ChatContainer> list_chats = Core.Core.Settings.GetChats();
 
             chats.Clear();
 
-            if (list_chats != null)
-                list_chats.ForEach((container) =>
+            list_chats.ForEach((container) =>
                 {
                     Chat chat = new Chat(container);
 

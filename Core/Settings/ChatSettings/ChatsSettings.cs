@@ -38,8 +38,8 @@ namespace Avrora.Core.Settings.ChatSettings
 
             if (!fileInfo.Exists)
                 Serialize();
-
-            Deserialize();
+            else
+                Deserialize();
         }
         public void DeleteChat(string nickname)
         {
@@ -69,7 +69,7 @@ namespace Avrora.Core.Settings.ChatSettings
         {
             actualServerChatsSettings.AddChat(nickname);
         }
-        public List<Message>? GetMessages(string nickname)
+        public List<Message> GetMessages(string nickname)
         {
             return actualServerChatsSettings.GetMessages(nickname);
         }
@@ -95,7 +95,7 @@ namespace Avrora.Core.Settings.ChatSettings
 
             if (!URIAndServerChatsSettings.TryGetValue(uri, out ServerChatsSettings? serverChatsSettings))
             {
-                string path_server = $"{path}{ConvertURI(FoldersOfServer[uri])}\\";
+                string path_server = $"{path}{FoldersOfServer[uri]}\\";
 
                 ServerChatsSettings serverChats = new ServerChatsSettings(path_server);
 
@@ -129,14 +129,12 @@ namespace Avrora.Core.Settings.ChatSettings
                 writer.WriteAsync(json);
             }
 
-            Dictionary<string, string> _dictFoldersOfServer = FoldersOfServer;
-
-            foreach (KeyValuePair<string, string> kvp in _dictFoldersOfServer)
+            foreach (KeyValuePair<string, string> kvp in FoldersOfServer)
             {
                 DirectoryInfo dirInfo = new DirectoryInfo($"{path}{kvp.Value}");
                 if (!dirInfo.Exists)
                 {
-                        dirInfo.Create();
+                    dirInfo.Create();
                 }
             }
         }

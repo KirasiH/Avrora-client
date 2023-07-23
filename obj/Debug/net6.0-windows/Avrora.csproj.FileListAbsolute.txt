@@ -112,3 +112,5 @@ C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net
 C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Pages\PageChatsSettings.baml
 C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Windows\ChangeKeyWindows.g.cs
 C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Windows\ChangeKeyWindows.baml
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Windows\FileSend.g.cs
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Debug\net6.0-windows\Windows\FileSend.baml

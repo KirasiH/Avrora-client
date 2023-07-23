@@ -12,6 +12,12 @@ using System.Threading.Tasks;
 
 namespace Avrora.Core
 {
+    public enum IsSendMessage
+    {
+        Text = 0,
+        Photo = 1,
+        File = 2,
+    }
     public class Core
     {
         public delegate void DelegateChangeActualServer(ServerSettingsContainer container);
@@ -29,10 +35,10 @@ namespace Avrora.Core
         public delegate void DelegateErrorURLServer(string uri);
         public static event DelegateErrorURLServer? EventErrorURIServer;
 
-        public delegate void DelegateRecvMessage(ServerRecvMessageContainer container);
+        public delegate void DelegateRecvMessage(Message message);
         public static event DelegateRecvMessage? EventRecvMessage;
 
-        public delegate void DelegateSendMessage(ServerSendMessageContainer container);
+        public delegate void DelegateSendMessage(Message message);
         public static event DelegateSendMessage? EventSendMessage;
 
         public static Settings.Settings Settings { get; private set; }
@@ -144,14 +150,14 @@ namespace Avrora.Core
                 EventUserMethods(container.new_user, context);
         }
 
-        public static void SendUser(UserSettingsContainer conteiner)
+        public static void SendMessage(string data, IsSendMessage ISM)
         {
-            throw new NotImplementedException();
+            
         }
 
-        public void RecvUser(UserSettingsContainer conteiner)
+        public void RecvMessage()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

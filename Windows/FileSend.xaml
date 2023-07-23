@@ -1,0 +1,98 @@
+﻿<Window x:Class="Avrora.Windows.HowIsSendFile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Avrora.Windows"
+        mc:Ignorable="d"
+        Title="SandIs" Height="200" Width="250"
+        WindowStyle="None"
+        MouseDown="Grid_MouseDown"
+        AllowsTransparency="True">
+
+    <Grid Style="{DynamicResource SandIsWindow}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Style="{DynamicResource SandIsStackPanel}">
+
+            <TextBlock x:Name="TextBlockFileName"
+                     Background="Transparent"
+                     FontSize="13"
+                     Foreground="White"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+
+            <StackPanel x:Name="FileOrAlternative"
+                        Height="120"
+                        Margin="10">
+
+                <TextBlock Text="How:"
+                           Background="Transparent"
+                           FontSize="16"
+                           Foreground="White"/>
+
+                <StackPanel Margin="10 0 0 0">
+                    <StackPanel Orientation="Horizontal"
+                    Margin="0 5 0 6">
+                        <Viewbox
+                        Margin="0 4"
+                        Height="16">
+                            <RadioButton x:Name="fileButton"
+                                 IsChecked="True"
+                                 GroupName="TypeFile"/>
+                        </Viewbox>
+
+                        <TextBlock Text="File"
+                               FontSize="16"
+                               Margin="3 0"
+                               Style="{DynamicResource SandIsTextBlock}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <Viewbox Height="16"
+                         Margin="0 5">
+                            <RadioButton x:Name="alternativeButton"
+                                 GroupName="TypeFile"/>
+                        </Viewbox>
+
+                        <TextBlock x:Name="TextBlockForAlternative"
+                               FontSize="16"
+                               Margin="3 0"
+                               Style="{DynamicResource SandIsTextBlock}"/>
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Bottom"
+                        Orientation="Horizontal"
+                        Margin="8 0">
+
+                <Button Content="Cancel"
+                        Width="115"
+                        FontSize="16"
+                        Padding="0 0 0 2"
+                        Margin="0 0 2 0"
+                        Style="{StaticResource SandIsButton}"
+                        Click="ButtonCancel_Click"/>
+
+                <Button Content="Send" 
+                        Width="115"
+                        FontSize="16"
+                        Padding="0 0 0 2"
+                        Margin="2 0 0 0"
+                        Style="{StaticResource SandIsButton}"
+                        Click="ButtonOk_Click"></Button>
+            </StackPanel>
+            
+        </StackPanel>
+        
+    </Grid>
+</Window>

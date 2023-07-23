@@ -1,4 +1,5 @@
-﻿using Avrora.Core.JsonClassesContainers;
+﻿using Avrora.Core;
+using Avrora.Core.JsonClassesContainers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Avrora.ViewModel.ViewModelChat
 {
@@ -19,6 +21,33 @@ namespace Avrora.ViewModel.ViewModelChat
         private int quentity = 0;
         private ObservableCollection<Message> messages = new ObservableCollection<Message>();
 
+        private bool selection = false;
+        public bool Selection
+        {
+            get { return selection; }
+            set
+            {
+                selection = value;
+
+                if (selection)
+                {
+                    List<Message> list = Core.Core.Settings.GetMessages(nickname);
+
+                    list.ForEach((message) => {
+                        Messages.Add(message);
+                    });
+
+                    if(list.Count != 0)
+                        last_message = Messages.Last();
+
+                    Quentity = 0;
+                }
+                else
+                {
+                    Messages.Clear();
+                }
+            }
+        }
         public string Nickname
         {
             get { return nickname; }
@@ -52,6 +81,9 @@ namespace Avrora.ViewModel.ViewModelChat
             set
             {
                 quentity = value;
+
+                Core.Core.Settings.SetQuentity(nickname, quentity);
+
                 OnPropertyChanged();
             }
         }
@@ -95,7 +127,21 @@ namespace Avrora.ViewModel.ViewModelChat
         {
             Core.Core.Settings.AddEncryptingKey(nickname, encruptingKey);
         }
+        public void DeleteMessages()
+        {
+            messages.Clear();
+        }   
+        public void RecvMessage(Message message)
+        {
+            Messages.Add(message);
 
+            if (!selection)
+                Quentity = quentity++;
+        }
+        public void SendMessage(string data, IsSendMessage isSend)
+        {
+            Core.Core.SendMessage(data, isSend);
+        }
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {

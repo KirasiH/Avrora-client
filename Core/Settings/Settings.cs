@@ -74,11 +74,11 @@ namespace Avrora.Core.Settings
         {
             chatsSettings.AddChat(nickname);
         }
-        public List<Message>? GetMessages(string nickname)
+        public List<Message> GetMessages(string nickname)
         {
             return chatsSettings.GetMessages(nickname);
         }
-        public List<ChatContainer>? GetChats()
+        public List<ChatContainer> GetChats()
         {
             return chatsSettings.GetChats();
         }

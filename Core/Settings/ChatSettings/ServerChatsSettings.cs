@@ -18,8 +18,8 @@ namespace Avrora.Core.Settings.ChatSettings
         public void SetQuentity(string nickname, int quentity);
         public void AddEncryptingKey(string nickname, string key);
         public void AddChat(string nickname);
-        public List<Message>? GetMessages(string nickname);
-        public List<ChatContainer>? GetChats();
+        public List<Message> GetMessages(string nickname);
+        public List<ChatContainer> GetChats();
         public Message? AddMessage(ServerSendMessageContainer message);
         public Message? AddMessage(ServerRecvMessageContainer message);
     }
@@ -36,13 +36,13 @@ namespace Avrora.Core.Settings.ChatSettings
         }
         public void DeleteChat(string nickname) { }
         public void DeleteMessage(string nickname, int id) { }
-        public List<ChatContainer>? GetChats()
+        public List<ChatContainer> GetChats()
         {
-            return null;
+            return new List<ChatContainer>();
         }
-        public List<Message>? GetMessages(string nickname)
+        public List<Message> GetMessages(string nickname)
         {
-            return null;
+            return new List<Message>();
         }
         public void SetPathSave(string nickname, string path) { }
         public void SetQuentity(string nickname, int quentity) { }

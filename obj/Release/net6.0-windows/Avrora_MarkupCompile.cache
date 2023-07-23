@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\obj\Release\net6.0-windows\
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\obj\Release\net6.0-windows\
 Avrora
 none
 false
 TRACE;RELEASE;NET;NET6_0;NETCOREAPP
-C:\Users\Doctor Ivan\Documents\Avrora\Client\Avrora\App.xaml
-3-713827664
+C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\App.xaml
+7-1558950656
 
-21-1061556951
-194237474483
-MainWindow.xaml;Pages\PageSettingsUser.xaml;Styles\DarkWindowsStyles.xaml;
+31-954504482
+2031577854355
+MainWindow.xaml;Pages\PageApplicationSettings.xaml;Pages\PageChatsSettings.xaml;Pages\PageSettingsUser.xaml;Styles\DarkWindowsStyles.xaml;Windows\ChangeKeyWindows.xaml;Windows\FileSend.xaml;
 
-True
+False
 

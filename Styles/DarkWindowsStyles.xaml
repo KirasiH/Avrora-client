@@ -6,7 +6,7 @@
     </Style>
 
     <Style x:Key="ForListChatGrid" TargetType="Grid">
-        <Setter Property="Background" Value="#34363F"/>
+        <Setter Property="Background" Value="#292929"/>
     </Style>
 
     <Style x:Key="ForBorder" TargetType="Border">
@@ -115,6 +115,23 @@
 
     <Style x:Key="ChangeKeyWindowForButtonOkCancel" TargetType="Button">
         <Setter Property="Background" Value="#25252C"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="SandIsWindow" TargetType="Grid">
+        <Setter Property="Background" Value="#35393F"/>
+    </Style>
+
+    <Style x:Key="SandIsStackPanel" TargetType="StackPanel">
+        <Setter Property="Background" Value="#1c1c1c"/>
+    </Style>
+
+    <Style x:Key="SandIsTextBlock" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="SandIsButton" TargetType="Button">
+        <Setter Property="Background" Value="#202021"/>
         <Setter Property="Foreground" Value="White"/>
     </Style>
 

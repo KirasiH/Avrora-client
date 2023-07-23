@@ -11,6 +11,11 @@
         WindowStyle="None"
         AllowsTransparency="True">
 
+    <Window.Resources>
+        <local:ConverterQuentityForListChatsItems x:Key="converterQuentityForListChatsItems"/>
+        <local:ConverterVisibilityForListChatsItems x:Key="converterVisibilityForListChatsItems"/>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -78,25 +83,75 @@
               Style="{DynamicResource ForListChatGrid}"
               Grid.Row="1" 
               
-              Visibility="Visible">
+              Visibility="Visible"
+              DataContext="{StaticResource viewModelChatSettings}">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
                 <RowDefinition/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
-            <DockPanel
-                Grid.Row="1">
+            <StackPanel
+                Grid.Row="0">
 
                 <ListBox x:Name="ListChats"
-                    Background="Transparent">
-                    
+                    Background="#34363F"
+                    BorderBrush="Transparent"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ItemsSource="{Binding Chats}"
+                    SelectedItem="{Binding Chat}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid Height="60"
+                                  Width="{Binding ElementName=ListChats, Path=ActualWidth}">
+
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding Name}"
+                                               Margin="5 6 0 0"
+                                               FontSize="16"
+                                               Foreground="White"/>
+
+                                    <TextBlock Text="{Binding LastMessage.data}"
+                                               FontSize="15"
+                                               Margin="5 9 0 4"
+                                               Foreground="LightGray"/>
+
+                                </StackPanel>
+
+                                <Canvas Height="18"
+                                            Width="18"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Margin="0 0 16 4"
+                                            Visibility="{Binding Quentity, Converter={StaticResource converterVisibilityForListChatsItems}}">
+
+                                    <Ellipse Fill="AliceBlue" 
+                                             Width="18"
+                                             Height="18"
+                                             Canvas.Left="0"
+                                             Canvas.Top="0"/>
+
+                                    <TextBlock Text="{Binding Quentity, Converter={StaticResource converterQuentityForListChatsItems}}"
+                                               Canvas.Left="5"
+                                               Canvas.Top="-1.5"
+                                               Foreground="Black"
+                                               FontSize="15"
+                                               />
+
+                                </Canvas>
+
+                            </Grid>
+                            
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
                 </ListBox>
                 
-            </DockPanel>
+            </StackPanel>
             
-            <StackPanel x:Name="StackPanelUserListChatGroup" Grid.Row="2" 
+            <StackPanel x:Name="StackPanelUserListChatGroup" Grid.Row="1" 
                         Style="{DynamicResource ForStackPanelUserListChatGroup}"
                         MouseLeftButtonDown="Click_StackPanelUserListChatGroup"
                         DataContext="{StaticResource viewModelUserSettingsComponent}">
@@ -130,7 +185,7 @@
         </Grid>
 
         <Grid x:Name="ListSettingsGrid" Grid.Row="1" Grid.Column="0"
-              Visibility="Visible"
+              Visibility="Hidden"
               Style="{DynamicResource ForListSettingsGrid}">
 
             <Grid.RowDefinitions>
@@ -190,16 +245,26 @@
         </Grid>
 
         <Grid x:Name="ChatGridBlock"  Grid.Column="2" Grid.Row="1"
-              Visibility="Hidden"
-              >
+              Visibility="Visible"
+              DataContext="{StaticResource viewModelChatSettings}">
 
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="55"/>
             </Grid.RowDefinitions>
 
-            <StackPanel>
-                <ListBox x:Name="ListMassage"></ListBox>
+            <StackPanel DataContext="{Binding Chat}">
+                <ListBox x:Name="ListMassage"
+                         Background="Transparent"
+                         ItemsSource="{Binding Messages}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
             </StackPanel>
 
             <DockPanel Grid.Row="1"
@@ -211,23 +276,20 @@
                 <Button DockPanel.Dock="Left"
                         Content="File" Width="50"
                         FontSize="14"
-                        Style="{DynamicResource ForButtonChatGridBlock}"/>
+                        Style="{DynamicResource ForButtonChatGridBlock}"
+                        Click="FileButton_Click"/>
 
-                <Button DockPanel.Dock="Right"
-                        Content="Send" Width="50"
-                        Margin="0 0 3 0"
-                        FontSize="14"
-                        Style="{DynamicResource ForButtonChatGridBlock}"/>
-
-                <TextBox VerticalContentAlignment="Center"
+                <TextBox x:Name="ChatGridBlockTextBoxChat"
+                         VerticalContentAlignment="Center"
                          FontSize="15"
-                         Style="{DynamicResource ForTextBoxChatGridBlock}"/>
-
+                         Style="{DynamicResource ForTextBoxChatGridBlock}"
+                         Margin=" 0 0 5 0"
+                         KeyDown="ChatGridBlockTextBoxChat_KeyDown"/>
             </DockPanel>
         </Grid>
 
         <Grid x:Name="SettingsGridBlock" Grid.Column="2" Grid.Row="1"
-              Visibility="Visible">
+              Visibility="Hidden">
 
             <Frame x:Name="SettingsFrame"
                    HorizontalAlignment="Stretch"

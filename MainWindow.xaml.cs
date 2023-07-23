@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,19 +14,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Avrora.Core.Settings.ChatSettings;
 using Avrora.Pages;
+using Avrora.ViewModel.ViewModelChat;
+using Avrora.Windows;
+using Avrora.Core;
 
 namespace Avrora
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
     public partial class MainWindow : Window
     {
-
+        private ViewModelChatsSettings VMCS;
         public MainWindow()
         {
             InitializeComponent();
+
+            VMCS = (ViewModelChatsSettings)Application.Current.Resources["viewModelChatSettings"];
         }
 
         private void BorderMouseDown(object sender, MouseButtonEventArgs e)
@@ -81,9 +90,66 @@ namespace Avrora
                 SettingsFrame.Navigate(new PageChatsSettings());
         }
 
-        private void ChatButton_Click(object sender, RoutedEventArgs e)
+        private void ChatGridBlockTextBoxChat_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Return && !string.IsNullOrWhiteSpace(ChatGridBlockTextBoxChat.Text))
+            {
+                VMCS.SendMessage(ChatGridBlockTextBoxChat.Text, IsSendMessage.Text);
 
+                ChatGridBlockTextBoxChat.Text = "";
+            }
+        }
+
+        private void FileButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog OFD = new System.Windows.Forms.OpenFileDialog();
+
+            if (OFD.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                return;
+            
+            string name = System.IO.Path.GetFileName(OFD.FileName);
+
+            FileIs fileis = IsFile.Is(name);
+
+            HowIsSendFile win = new HowIsSendFile(fileis, name);
+
+            if (win.ShowDialog() ?? false)
+            {
+                VMCS.SendMessage(OFD.FileName, IsFile.ConvertInIsSendMessage(win.Is));
+            }
+        }
+    }
+
+    public class ConverterVisibilityForListChatsItems : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int val = (int)value;
+
+            if (val==0)
+                return Visibility.Hidden;
+            return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+    public class ConverterQuentityForListChatsItems : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int val = (int)value;
+
+            if (val < 10)
+                return val;
+            return 9;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
         }
     }
 }

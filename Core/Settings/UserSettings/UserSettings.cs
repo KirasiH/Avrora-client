@@ -32,16 +32,14 @@ namespace Avrora.Core.Settings.UserSettings
         public UserSettings(string actServer, string path)
         {
             actualServer = actServer;
-            this.path_fileSettings = path + "user.json";
+           path_fileSettings = path + "user.json";
 
-            DirectoryInfo dirinfo = new DirectoryInfo(path);
+            FileInfo fileInfo= new FileInfo(path_fileSettings);
 
-            if (!dirinfo.Exists) {
-                dirinfo.Create();
+            if (!fileInfo.Exists)
                 Serializer();
-            } else {
+            else
                 Deserialize();
-            }
         }
 
         private void Serializer()

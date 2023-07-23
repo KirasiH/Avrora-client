@@ -12,7 +12,7 @@ namespace Avrora.Core.Settings.ApplicationSettings
 {
     public class ApplicationSettingsFields
     {
-        public string actualURIServer { get; set; } = "";
+        public string actualURIServer { get; set; } = " ";
 
         public List<string> listServer { get; set; } = new List<string>();
     }
@@ -24,14 +24,12 @@ namespace Avrora.Core.Settings.ApplicationSettings
         {
             this.path_fileApplication = path + "application.json";
 
-            DirectoryInfo dirinfo = new DirectoryInfo(path);
+            FileInfo fileInfo = new FileInfo(path_fileApplication);
 
-            if (!dirinfo.Exists) {
-                dirinfo.Create();
+            if (!fileInfo.Exists)
                 Serializer();
-            } else {
+            else
                 Deserialize();
-            }
         }
 
         public void SetActualServer(string uri)
