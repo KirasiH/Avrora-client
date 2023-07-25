@@ -45,6 +45,7 @@ namespace Avrora.Core.Settings
             userSettings = new UserSettings.UserSettings(serverSettings.GetActualServer(), pathUserSettings);
             chatsSettings = new ChatsSettings(pathChatSettings);
             chatsSettings.SetActualServer(serverSettings.GetActualServer());
+            chatsSettings.SetActualUser(userSettings.GetActualUser());
         }
         public void DeleteChat(string nickname)
         {
@@ -95,6 +96,7 @@ namespace Avrora.Core.Settings
             serverSettings.SetActualServer(uri);
             userSettings.SetActualServer(serverSettings.GetActualServer());
             chatsSettings.SetActualServer(serverSettings.GetActualServer());
+            chatsSettings.SetActualUser(userSettings.GetActualUser());
         }
         public void DeleteServer(string uri)
         {
@@ -102,6 +104,7 @@ namespace Avrora.Core.Settings
             chatsSettings.DeleteServer(uri);
             userSettings.DeleteServer(serverSettings.GetActualServer());
             chatsSettings.SetActualServer(serverSettings.GetActualServer());
+            chatsSettings.SetActualUser(userSettings.GetActualUser());
         }
         public string GetActualServer()
         {
@@ -114,6 +117,7 @@ namespace Avrora.Core.Settings
         public void SetActualUser(UserSettingsContainer container)
         {
             userSettings.SetActualUser(container);
+            chatsSettings.SetActualUser(userSettings.GetActualUser());
         }
         public void SetActualUser(UserSettingsContainer container, string context)
         {
@@ -122,6 +126,7 @@ namespace Avrora.Core.Settings
         public void DelActualUser(UserSettingsContainer container) 
         {
             userSettings.DeleteActualUser();
+            chatsSettings.SetActualUser(userSettings.GetActualUser());
         }
         public UserSettingsContainer GetActualUser()
         {

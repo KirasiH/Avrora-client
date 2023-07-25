@@ -21,16 +21,11 @@
                     VerticalAlignment="Center"
                     Margin="10">
 
-            <TextBlock Text=""
-                       FontSize="20"
-                       Foreground="White"
-                       Margin="5 0 4 0"/>
-
             <TextBox x:Name="TextBoxKey" VerticalAlignment="Center"
                      Style="{DynamicResource ChangeKeyWindowForTextBoxKey}"
                      Width="364"
                      FontSize="20"
-                     Margin="0 4"/>
+                     Margin="8 4"/>
 
         </StackPanel>
 

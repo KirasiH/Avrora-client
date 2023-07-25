@@ -44,6 +44,7 @@ namespace Avrora.ViewModel.ViewModelChat
         public ViewModelChatsSettings()
         {
             Core.Core.EventChangeActualServer += ChangeActualServer;
+            Core.Core.EventChangeActualUser += ChangeActualUser;
 
             TakeChats();
         }
@@ -66,7 +67,12 @@ namespace Avrora.ViewModel.ViewModelChat
         {
             chat?.SendMessage(data, isSend);
         }
-        public void ChangeActualServer(ServerSettingsContainer container)
+        public void ChangeActualServer(ServerSettingsContainer _)
+        {
+            TakeChats();
+        }
+
+        public void ChangeActualUser(UserSettingsContainer _)
         {
             TakeChats();
         }

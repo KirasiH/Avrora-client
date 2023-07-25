@@ -61,6 +61,11 @@ namespace Avrora.Core.Settings.ChatSettings
         {
             actualServerChatsSettings.SetQuentity(nickname, quentity);
         }
+
+        public void SetActualUser(UserSettingsContainer conteiner)
+        {
+            actualServerChatsSettings.SetUser(conteiner.nickname);
+        }
         public void AddEncryptingKey(string nickname, string key)
         {
             actualServerChatsSettings.AddEncryptingKey(nickname, key);

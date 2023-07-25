@@ -48,19 +48,16 @@
                             Width="25"
                             Height="25"
                             BorderThickness="0"
-                            Background="Transparent"
-                            Foreground="Gray"
-                            FontWeight="Bold"
+                            Style="{DynamicResource ForButtonBorder}"
+                            FontSize="16"
                             Click="ButtonWindowsMinimize"/>
 
                     <Button Content="☐"
                             Width="25"
                             Height="25"
                             BorderThickness="0"
-                            Background="Transparent"
-                            Foreground="Gray"
+                            Style="{DynamicResource ForButtonBorder}"
                             FontSize="16"
-                            FontWeight="Bold"
                             Padding="0 3 0 0"
                             Click="WindowsStateButton"/>
 
@@ -68,9 +65,7 @@
                             Width="25"
                             Height="25"
                             BorderThickness="0"
-                            Background="Transparent"
-                            Foreground="Gray"
-                            FontWeight="Bold"
+                            Style="{DynamicResource ForButtonBorder}"
                             Click="ButtonClose"/>
 
                 </StackPanel>
@@ -95,8 +90,7 @@
                 Grid.Row="0">
 
                 <ListBox x:Name="ListChats"
-                    Background="#34363F"
-                    BorderBrush="Transparent"
+                    Style="{DynamicResource ForListChatsListChatGrid}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ItemsSource="{Binding Chats}"
                     SelectedItem="{Binding Chat}">
@@ -111,12 +105,12 @@
                                     <TextBlock Text="{Binding Name}"
                                                Margin="5 6 0 0"
                                                FontSize="16"
-                                               Foreground="White"/>
+                                               Style="{DynamicResource ForListChatsTextBlockNameListChatGrid}"/>
 
                                     <TextBlock Text="{Binding LastMessage.data}"
                                                FontSize="15"
                                                Margin="5 9 0 4"
-                                               Foreground="LightGray"/>
+                                               Style="{DynamicResource ForListChatsTextBlockLastMessageListChatGrid}"/>
 
                                 </StackPanel>
 
@@ -136,7 +130,7 @@
                                     <TextBlock Text="{Binding Quentity, Converter={StaticResource converterQuentityForListChatsItems}}"
                                                Canvas.Left="5"
                                                Canvas.Top="-1.5"
-                                               Foreground="Black"
+                                               Style="{DynamicResource ForeListChatsCanvasTextBlockListChatGrid}"
                                                FontSize="15"
                                                />
 
@@ -159,12 +153,12 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Name: "
                                FontSize="16"
-                               Foreground="#FAFAFA"
+                               Style="{DynamicResource ForTextBlockWithIndexStackPanelUserListChatGroup}"
                                Margin="10 3"></TextBlock>
 
                     <TextBlock Text="{Binding Name}"
                            Margin="0 3 0 0"
-                           Foreground="#F5F5F5"
+                           Style="{DynamicResource ForTextBlockWithObjectStackPanelUserListChatGroup}"
                            FontSize="15"/>
 
                 </StackPanel>
@@ -172,12 +166,12 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Nickname: "
                                FontSize="16"
-                               Foreground="#FAFAFA"
+                               Style="{DynamicResource ForTextBlockWithIndexStackPanelUserListChatGroup}"
                                Margin="10 0"></TextBlock>
 
                     <TextBlock Text="{Binding Nickname}"
                            Margin="0 0 0 0"
-                           Foreground="#F5F5F5"
+                           Style="{DynamicResource ForTextBlockWithObjectStackPanelUserListChatGroup}"
                            FontSize="15"/>
                 </StackPanel>
             </StackPanel>

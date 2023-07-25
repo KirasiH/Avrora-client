@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PageSettingsUser">
 
-    <Grid Background="#35393F">
+    <Grid Style="{DynamicResource ForGridPageSettingsUser}">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -26,22 +26,22 @@
                     Margin="0 0 30 5">
             
             <TextBlock Text="Name: "
-                           FontSize="16"
-                           Foreground="White"/>
+                       FontSize="16"
+                       Style="{DynamicResource ForTextBlockIndexPageSettingsUser}"/>
 
             <TextBlock Text="Nickname: "
-                           FontSize="16"
-                           Foreground="White"
+                       FontSize="16"
+                       Style="{DynamicResource ForTextBlockIndexPageSettingsUser}"
                        Margin="0 6"/>
 
             <TextBlock Text="First key: "
-                           FontSize="16"
-                           Foreground="White"
+                       FontSize="16"
+                       Style="{DynamicResource ForTextBlockIndexPageSettingsUser}"
                        Margin="0 6"/>
             
             <TextBlock Text="Second key"
-                           FontSize="16"
-                           Foreground="White"
+                       FontSize="16"
+                       Style="{DynamicResource ForTextBlockIndexPageSettingsUser}"
                        Margin="0 6"/>
             
         </StackPanel>
@@ -51,28 +51,23 @@
                     DataContext="{StaticResource viewModelUserSettingsComponent}">
 
             <TextBox x:Name="TextBoxName" Text="{Binding Name, Mode=OneWay}" Width="200"
-                         Foreground="White"
-                         Background="Transparent"
-                         FontSize="16"
-                         />
+                     Style="{DynamicResource ForTextBlockObjectPageSettingsUser}"
+                     FontSize="16"/>
 
             <TextBox x:Name="TextBoxNickname" Text="{Binding Nickname, Mode=OneWay}" Width="200"
-                         Foreground="White"
-                         Background="Transparent"
-                         FontSize="16"
-                         Margin="0 6"/>
+                     Style="{DynamicResource ForTextBlockObjectPageSettingsUser}"
+                     FontSize="16"
+                     Margin="0 6"/>
 
             <TextBox x:Name="TextBoxFirstKey" Text="{Binding FirstKey, Mode=OneWay}" Width="200"
-                         Foreground="White"
-                         Background="Transparent"
-                         Margin="0 6"
-                         FontSize="16"/>
+                     Style="{DynamicResource ForTextBlockObjectPageSettingsUser}"
+                     Margin="0 6"
+                     FontSize="16"/>
 
             <TextBox x:Name="TextBoxSecondKey" Text="{Binding SecondKey, Mode=OneWay}" Width="200"
-                         Foreground="White"
-                         Background="Transparent"
-                         FontSize="16"
-                         Margin="0 6"/>
+                     Style="{DynamicResource ForTextBlockObjectPageSettingsUser}"
+                     FontSize="16"
+                     Margin="0 6"/>
         </StackPanel>
 
 
@@ -81,20 +76,18 @@
 
 
             <Button Content="Recreate"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Style="{DynamicResource ForButtonPageSettingsUser}"
                     Height="35"
                     Width="210"
                     FontSize="15"
-                    Background="#32383F"
                     Margin="10 7 10 0"
-                Click="Click_ButtonRecreate"/>
+                    Click="Click_ButtonRecreate"/>
 
             <Button Content="Create"
                     VerticalAlignment="Top"
-                    Background="#32383F"
-                    Foreground="White"
+                    Style="{DynamicResource ForButtonPageSettingsUser}"
                     Height ="35"
                     Width="210"
                     Margin="10 7 10 7"
@@ -103,8 +96,7 @@
 
             <Button Content="Set"
                     VerticalAlignment="Top"
-                    Background="#32383F"
-                    Foreground="White"
+                    Style="{DynamicResource ForButtonPageSettingsUser}"
                     Height ="35"
                     Width="210"
                     Margin="10 0 10 7"
@@ -112,14 +104,13 @@
                     Click ="CLick_ButtonSet"/>
 
             <Button Content="Delete"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                Foreground="Black"
-                Width="210"
-                Height="35"
-                FontSize="15"
-                Background="#F00508"
-                Click="Click_ButtonDelete"/>
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Style="{DynamicResource ForButtonDeletePageSettingsUser}"
+                    Width="210"
+                    Height="35"
+                    FontSize="15"
+                    Click="Click_ButtonDelete"/>
 
         </StackPanel>
 

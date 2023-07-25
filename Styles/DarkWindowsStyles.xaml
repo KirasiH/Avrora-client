@@ -108,6 +108,86 @@
         <Setter Property="Background" Value="#35393F"/>
     </Style>
 
+    <Style x:Key="ForButtonBorder" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Gray"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="ForListChatsListChatGrid" TargetType="ListBox">
+        <Setter Property="Background" Value="#34363F"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+
+    <Style x:Key="ForListChatsTextBlockNameListChatGrid" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="ForListChatsTextBlockLastMessageListChatGrid" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="LightGray"/>
+    </Style>
+
+    <Style x:Key="ForeListChatsCanvasTextBlockListChatGrid" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
+
+    <Style x:Key="ForTextBlockWithIndexStackPanelUserListChatGroup" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#FAFAFA"/>
+    </Style>
+
+    <Style x:Key="ForTextBlockWithObjectStackPanelUserListChatGroup" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#F5F5F5"/>
+    </Style>
+
+    <Style x:Key="ForTextBlockPageApplicationSettings" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="ForGridStylePageApplicationSettings" TargetType="Grid">
+        <Setter Property="Background" Value="#35393F"/>
+    </Style>
+
+    <Style x:Key="ForGridPageChatsSettings" TargetType="Grid">
+        <Setter Property="Background" Value="#35393F"/>
+    </Style>
+
+    <Style x:Key="ForDockPanelPageChatsSettings" TargetType="DockPanel">
+        <Setter Property="Background" Value="#35393F"/>
+    </Style>
+
+    <Style x:Key="ForListBoxPageChatsSettings" TargetType="ListBox">
+        <Setter Property="Background" Value="#35393F"/>
+        <Setter Property="BorderBrush" Value="#35393F"/>
+    </Style>
+
+    <Style x:Key="ForButtonDeleteChatsSettings" TargetType="Button">
+        <Setter Property="Background" Value="Red"/>
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
+
+    <Style x:Key="ForGridPageSettingsUser" TargetType="Grid">
+        <Setter Property="Background" Value="#35393F"/>
+    </Style>
+
+    <Style x:Key="ForTextBlockIndexPageSettingsUser" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="ForTextBlockObjectPageSettingsUser" TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="ForButtonPageSettingsUser" TargetType="Button">
+        <Setter Property="Background" Value="#32383F"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="ForButtonDeletePageSettingsUser" TargetType="Button">
+        <Setter Property="Background" Value="#F00508"/>
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
+
     <Style x:Key="ChangeKeyWindowForTextBoxKey" TargetType="TextBox">
         <Setter Property="Background" Value="#34363F"/>
         <Setter Property="Foreground" Value="White"/>
@@ -120,6 +200,10 @@
 
     <Style x:Key="SandIsWindow" TargetType="Grid">
         <Setter Property="Background" Value="#35393F"/>
+    </Style>
+
+    <Style x:Key="SandIsWindowTextBlockFileName" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
     </Style>
 
     <Style x:Key="SandIsStackPanel" TargetType="StackPanel">

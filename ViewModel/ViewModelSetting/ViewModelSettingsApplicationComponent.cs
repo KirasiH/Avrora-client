@@ -43,9 +43,9 @@ namespace Avrora.ViewModel.ViewModelSettings
                 if (state == StateViewModel.ChangeAfterView)
                 {
                     Core.Core.SetActualServer(selected);
-                }
 
-                OnPropertyChanged();
+                    OnPropertyChanged();
+                }
             }
         }
         public ViewModelSettingsApplicationComponent() 
@@ -73,7 +73,6 @@ namespace Avrora.ViewModel.ViewModelSettings
 
             state = StateViewModel.ChangeAfterView;
         }
-
         public void DeleteServer(ServerSettingsContainer container)
         {
             state = StateViewModel.ChangeAfterEvent;
@@ -84,12 +83,10 @@ namespace Avrora.ViewModel.ViewModelSettings
 
             state = StateViewModel.ChangeAfterView;
         }
-
         public void DeleteServer(string uri)
         {
             Core.Core.DeleteServer(uri);
         }
-
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {

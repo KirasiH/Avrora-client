@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PageChatsSettings">
 
-    <Grid Background="#35393F"
+    <Grid Style="{DynamicResource ForGridStylePageApplicationSettings}"
           DataContext="{StaticResource viewModelChatSettings}">
 
         <Grid.RowDefinitions>
@@ -17,12 +17,11 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0"
-                    Background="#35393F">
+                    Style="{DynamicResource ForDockPanelPageChatsSettings}">
 
             <ListBox x:Name="ChatSettingsList"
                      Padding="5"
-                     Background="#35393F"
-                     BorderBrush="#35393F"
+                     Style="{DynamicResource ForListBoxPageChatsSettings}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ItemsSource="{Binding Chats}">
                 
@@ -98,8 +97,7 @@
                                         Width="150"
                                         Height="25"
                                         HorizontalAlignment="Left"
-                                        Background="Red"
-                                        Foreground="Black"
+                                        Style="{DynamicResource ForButtonDeleteChatsSettings}"
                                         FontSize="16"
                                         Click="DeleteButton_Click"/>
                             </StackPanel>

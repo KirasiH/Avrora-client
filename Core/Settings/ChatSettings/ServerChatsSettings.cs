@@ -22,6 +22,7 @@ namespace Avrora.Core.Settings.ChatSettings
         public List<ChatContainer> GetChats();
         public Message? AddMessage(ServerSendMessageContainer message);
         public Message? AddMessage(ServerRecvMessageContainer message);
+        public void SetUser(string nickname);
     }
     public class PlugServerChatsSettings : IServerChatsSettings
     {
@@ -48,13 +49,15 @@ namespace Avrora.Core.Settings.ChatSettings
         public void SetQuentity(string nickname, int quentity) { }
         public void SetTimeClear(string nickname, DateTime date) { }
         public void AddEncryptingKey(string nickname, string key) { }
+        public void SetUser(string nickname) { }
     }
     public class ServerChatsSettings : IServerChatsSettings
     {
         private string path;
         private string path_fileChatsJson;
-        private Dictionary<string, string> FolderOfChats = new Dictionary<string, string>();
-        private Dictionary<string, ChatSettings> NicknameAndChatSettings = new Dictionary<string, ChatSettings>();
+        private Dictionary<string, string> FoldersOfUser = new Dictionary<string, string>();
+        private Dictionary<string, UserChatsSettings> UserAndUserChatSettings = new Dictionary<string, UserChatsSettings>();
+        private UserChatsSettings actualUserChatsSettings;
         public ServerChatsSettings(string path)
         {
             this.path = path;
@@ -69,123 +72,88 @@ namespace Avrora.Core.Settings.ChatSettings
 
             Deserialize();
         }
-
         public void DeleteChat(string nickname)
         {
-            if (FolderOfChats.TryGetValue(nickname, out string? folder))
-            {
-                NicknameAndChatSettings.Remove(nickname);
-                FolderOfChats.Remove(nickname);
-
-                DirectoryInfo dir = new DirectoryInfo($"{path}{folder}");
-                dir.Delete(true);
-
-                Serialize();
-            }
+            actualUserChatsSettings.DeleteChat(nickname);
         }
         public void DeleteMessage(string nickname, int id)
         {
-            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
-
-            chatSettings.Clear(id);
+            actualUserChatsSettings.DeleteMessage(nickname, id);
         }
         public void SetPathSave(string nickname, string path)
         {
-            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
-
-            chatSettings.SetPathSave(path);
+            actualUserChatsSettings.SetPathSave(nickname, path);
         }
         public void SetTimeClear(string nickname, DateTime date)
         {
-            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
-
-            chatSettings.SetTimeClear(date);
+            actualUserChatsSettings.SetTimeClear(nickname, date);
         }
         public void SetQuentity(string nickname, int quentity)
         {
-            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
-
-            chatSettings.SetQuentity(quentity);
+            actualUserChatsSettings.SetQuentity(nickname, quentity);
         }
-        public void AddEncryptingKey(string nickname, string key)
+        public void SetUser(string nickname)
         {
-            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
-
-            chatSettings.AddEncryptingKey(key);
-        }
-        public void AddChat(string nickname)
-        {
-            if (!NicknameAndChatSettings.TryGetValue(nickname, out ChatSettings _))
+            if (!FoldersOfUser.TryGetValue(nickname, out string? _))
             {
-                string path_dir = $"{path}{ConvertPathFolderFromNickname(nickname)}\\";
-
-                DirectoryInfo dir = new DirectoryInfo(path_dir);
-
-                if (!dir.Exists)
-                    dir.Create();
-
-                ChatSettings chatSettings = new ChatSettings(path_dir);
-
-                NicknameAndChatSettings.Add(nickname, chatSettings);
-
-                FolderOfChats.Add(nickname, ConvertPathFolderFromNickname(nickname));
-
+                FoldersOfUser.Add(nickname, ConvertPathFolderFromNickname(nickname));
                 Serialize();
             }
+
+            if (!UserAndUserChatSettings.TryGetValue(nickname, out UserChatsSettings? _))
+            {
+                string path_nickname = $"{path}{FoldersOfUser[nickname]}\\";
+
+                UserChatsSettings userChatsSettings =  new UserChatsSettings(path_nickname);
+
+                UserAndUserChatSettings.Add(nickname, userChatsSettings);
+            }
+
+            actualUserChatsSettings = UserAndUserChatSettings[nickname];
         }
         public List<Message> GetMessages(string nickname)
         {
-            AddChat(nickname);
-
-            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
-
-            return chatSettings.GetMessage();
+            return actualUserChatsSettings.GetMessages(nickname);
         }
         public List<ChatContainer> GetChats()
         {
-            List<ChatContainer> list_chatContainer = new List<ChatContainer>();
-
-            foreach (KeyValuePair<string, ChatSettings> pair in NicknameAndChatSettings)
-            {
-                ChatContainer chatContainer = pair.Value.GetConfig();
-
-                chatContainer.nickname = pair.Key;
-
-                list_chatContainer.Add(chatContainer);
-            }
-
-            return list_chatContainer;
+            return actualUserChatsSettings.GetChats();
         }
         public Message AddMessage(ServerSendMessageContainer message)
         {
-            string nickname = message.whom;
-
-            AddChat(nickname);
-
-            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
-
-            return chatSettings.AddMessage(message);
+            return actualUserChatsSettings.AddMessage(message);
         }
         public Message AddMessage(ServerRecvMessageContainer message)
         {
-            string nickname = message.sender_nickname;
-
-            AddChat(nickname);
-
-            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
-
-            return chatSettings.AddMessage(message);
+            return actualUserChatsSettings.AddMessage(message);
+        }
+        public void AddEncryptingKey(string nickname, string key)
+        {
+            actualUserChatsSettings.AddEncryptingKey(nickname, key);
+        }
+        public void AddChat(string nickname)
+        {
+            actualUserChatsSettings.AddChat(nickname);
         }
         private string ConvertPathFolderFromNickname(string nickname)
         {
-            return $"Chat_{nickname}";
+            return $"User_{nickname}";
         }
         private void Serialize()
         {
             using (StreamWriter writer = new StreamWriter(path_fileChatsJson))
             {
-                string json = JsonSerializer.Serialize(FolderOfChats);
+                string json = JsonSerializer.Serialize(FoldersOfUser);
                 writer.Write(json);
+            }
+
+            foreach (KeyValuePair<string, string> kvp in FoldersOfUser)
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo($"{path}{kvp.Value}");
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
             }
         }
         private void Deserialize()
@@ -200,15 +168,15 @@ namespace Avrora.Core.Settings.ChatSettings
             if (_dictFolderOfChats == null)
                 return;
 
-            FolderOfChats = _dictFolderOfChats;
+            FoldersOfUser = _dictFolderOfChats;
 
-            foreach (KeyValuePair<string, string> pair in FolderOfChats)
+            foreach (KeyValuePair<string, string> pair in FoldersOfUser)
             {
-                string path_chatSettings = $"{path}{pair.Value}\\";
+                string path_userchatSettings = $"{path}{pair.Value}\\";
 
-                ChatSettings chatSettings = new ChatSettings(path_chatSettings);
+                UserChatsSettings userChatSettings = new UserChatsSettings(path_userchatSettings);
 
-                NicknameAndChatSettings.Add(pair.Key, chatSettings);
+                UserAndUserChatSettings.Add(pair.Key, userChatSettings);
             }
         }
     }

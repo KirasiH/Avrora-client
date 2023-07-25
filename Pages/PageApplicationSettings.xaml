@@ -9,7 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PageApplicationSettings">
 
-    <Grid Background="#35393F"
+    <Grid Style="{DynamicResource ForGridStylePageApplicationSettings}"
           DataContext="{StaticResource viewModelSettingsApplicationComponent}">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -20,37 +20,31 @@
                     VerticalAlignment="Center">
             <TextBlock Text="Server: "
                        FontSize="20"
-                       Foreground="White"
+                       Style="{DynamicResource ForTextBlockPageApplicationSettings}"
                        Margin="0 10"/>
 
             <StackPanel Margin="10">
                 
                 <StackPanel>
-                    <TextBlock Text="Focus server:"
-                               Foreground="White"
+                    <TextBlock 
+                               Text="Focus server:"
+                               Style="{DynamicResource ForTextBlockPageApplicationSettings}"
                                FontSize="18"
                                Margin="0 5"/>
+
                     <ComboBox x:Name="ServersCombobox"
                               Margin="30 0 0 0"
                               Width="360"
                               FontSize="16"
                               ItemsSource="{Binding Servers}"
-                              SelectedItem="{Binding SelectedServer, Mode=TwoWay}">
+                              SelectedItem="{Binding SelectedServer}">
 
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <TextBlock Text="{Binding}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                        
                     </ComboBox>
                 </StackPanel>
 
                 <StackPanel Margin="0 10">
                     <TextBlock Text="Add Server:"
-                               Foreground="White"
+                               Style="{DynamicResource ForTextBlockPageApplicationSettings}"
                                FontSize="18"
                                Margin="0 5"/>
                  
@@ -69,7 +63,7 @@
 
                 <StackPanel>
                     <TextBlock Text="Delete: "
-                               Foreground="White"
+                               Style="{DynamicResource ForTextBlockPageApplicationSettings}"
                                FontSize="18"
                                Margin="0 5"/>
 
@@ -78,7 +72,7 @@
                                    Text="{Binding SelectedServer}"
                                    Width="290"
                                    Margin="30 0 10 0"
-                                   Foreground="White"
+                                   Style="{DynamicResource ForTextBlockPageApplicationSettings}"
                                    FontSize="16"/>
                         <Button Content="Delete" Width="60"
                                 FontSize="16"
@@ -90,7 +84,7 @@
                 <StackPanel>
                     <TextBlock Margin="10"
                                Text=""
-                               Foreground="White"
+                               Style="{DynamicResource ForTextBlockPageApplicationSettings}"
                                FontSize="14"/>
                 </StackPanel>
             </StackPanel>
