@@ -34,6 +34,10 @@ namespace Avrora.ViewModel.ViewModelChat
                     List<Message> list = Core.Core.Settings.GetMessages(nickname);
 
                     list.ForEach((message) => {
+
+                        if (message.me)
+                            message.sender = "you";
+
                         Messages.Add(message);
                     });
 
@@ -140,7 +144,15 @@ namespace Avrora.ViewModel.ViewModelChat
         }
         public void SendMessage(string data, IsSendMessage isSend)
         {
-            Core.Core.SendMessage(data, isSend);
+            Core.Core.SendMessage(nickname, data, isSend);
+        }
+        public void AddMessage(Message message)
+        {
+            if (message.me)
+                message.sender = "you";
+
+            Messages.Add(message);
+            LastMessage = message;
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

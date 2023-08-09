@@ -36,6 +36,18 @@ namespace Avrora
             VMCS = (ViewModelChatsSettings)Application.Current.Resources["viewModelChatSettings"];
         }
 
+        public void ErrorPanelStatusServerForChatSet(string text, bool visibility)
+        {
+            if (visibility)
+            {
+                ErrorStatusServerTextBlock.Text = text;
+                ErrorPanelStatusServerForChat.Visibility = Visibility.Visible;
+                return;
+            }
+
+            ErrorPanelStatusServerForChat.Visibility = Visibility.Collapsed;
+        }
+
         private void BorderMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)

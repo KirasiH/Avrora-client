@@ -72,19 +72,26 @@ namespace Avrora.Core.AvroraAPI
             return await UserMethods(uriResource, twoContainer, HttpMethod.Put);
         }
 
-#pragma warning disable CS1998 // В асинхронном методе отсутствуют операторы await, будет выполнен синхронный метод
-        public async Task RecvUserAsync(UserSettingsContainer conteiner)
-#pragma warning restore CS1998 // В асинхронном методе отсутствуют операторы await, будет выполнен синхронный метод
+        public async Task<HttpResponseMessage> RecvUserAsync(UserSettingsContainer conteiner)
         {
-            throw new NotImplementedException();
+            string uriResource = $"{url}/recv";
+
+            HttpRequestMessage mess = new HttpRequestMessage(HttpMethod.Get, uriResource);
+
+            mess.Content = JsonContent.Create(conteiner);
+
+            return await client.SendAsync(mess);
         }
 
-#pragma warning disable CS1998 // В асинхронном методе отсутствуют операторы await, будет выполнен синхронный метод
-        public async Task SendUserAsync(UserSettingsContainer conteiner)
-#pragma warning restore CS1998 // В асинхронном методе отсутствуют операторы await, будет выполнен синхронный метод
+        public async Task<HttpResponseMessage> SendUserAsync(ServerSendMessageContainer messageContainer)
         {
-            throw new NotImplementedException();
-        }
+            string uriSend = $"{url}/send";
 
+            HttpRequestMessage mess = new HttpRequestMessage(HttpMethod.Post, uriSend);
+
+            mess.Content= JsonContent.Create(messageContainer);
+
+            return await client.SendAsync(mess);
+        }
     }
 }

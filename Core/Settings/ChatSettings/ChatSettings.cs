@@ -108,7 +108,7 @@ namespace Avrora.Core.Settings.ChatSettings
                 me = true
             };
 
-            if (type == "text")
+            if (type == IsSendMessage.Text.ToString())
             {
                 saving_message.data = Converter.GetStringFromBytes(message.content.b);
             }
@@ -118,7 +118,7 @@ namespace Avrora.Core.Settings.ChatSettings
 
                 saving_message.data = path_file;
 
-                DirectoryInfo directoryInfo = new DirectoryInfo(path_file);
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
 
                 if (!directoryInfo.Exists)
                     directoryInfo.Create();
@@ -132,6 +132,7 @@ namespace Avrora.Core.Settings.ChatSettings
             }
 
             messages.Add(saving_message);
+            last_message = saving_message;
 
             id++;
 
@@ -246,6 +247,10 @@ namespace Avrora.Core.Settings.ChatSettings
 
             return list_messages;
         }
+        public string GetEncryptingKey()
+        {
+            return encrypting_key;
+        }
         public void AddEncryptingKey(string key)
         { 
             encrypting_key = key;
@@ -254,7 +259,7 @@ namespace Avrora.Core.Settings.ChatSettings
         }
         private bool IsSave(string type)
         {
-            if (type == "photo")
+            if (type != IsSendMessage.File.ToString())
                 return true;
 
             return false;

@@ -28,7 +28,7 @@ namespace Avrora.Core.Settings.ChatSettings
         private string path;
         private Dictionary<string, string> FoldersOfServer = new Dictionary<string, string>();
         private Dictionary<string, ServerChatsSettings> URIAndServerChatsSettings = new Dictionary<string, ServerChatsSettings>();
-        private IServerChatsSettings actualServerChatsSettings = new PlugServerChatsSettings();
+        private ServerChatsSettings actualServerChatsSettings;
         public ChatsSettings(string path)
         {
             path_fileServersJson = $"{path}.json";
@@ -69,6 +69,10 @@ namespace Avrora.Core.Settings.ChatSettings
         public void AddEncryptingKey(string nickname, string key)
         {
             actualServerChatsSettings.AddEncryptingKey(nickname, key);
+        }
+        public string GetEncryptinhKey(string nickname)
+        {
+            return actualServerChatsSettings.GetEnctypringKey(nickname);
         }
         public void AddChat(string nickname)
         {
@@ -115,8 +119,6 @@ namespace Avrora.Core.Settings.ChatSettings
             {
                 URIAndServerChatsSettings.Remove(uri);
                 FoldersOfServer.Remove(uri);
-
-                actualServerChatsSettings = new PlugServerChatsSettings();
 
                 string full_path = $"{path}{folder}";
 

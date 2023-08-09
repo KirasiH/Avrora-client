@@ -131,6 +131,10 @@ namespace Avrora.Core.Settings.ChatSettings
         {
             actualUserChatsSettings.AddEncryptingKey(nickname, key);
         }
+        public string GetEnctypringKey(string nickname)
+        {
+            return actualUserChatsSettings.GetEncryptingKey(nickname);
+        }
         public void AddChat(string nickname)
         {
             actualUserChatsSettings.AddChat(nickname);

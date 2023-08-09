@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Avrora.ViewModel.ViewModelChat 
 { 
@@ -46,6 +47,9 @@ namespace Avrora.ViewModel.ViewModelChat
             Core.Core.EventChangeActualServer += ChangeActualServer;
             Core.Core.EventChangeActualUser += ChangeActualUser;
 
+            Core.Core.EventSendMessage += AddMessage;
+            Core.Core.EventErrorSendMessage+= ErrorSendMessage;
+
             TakeChats();
         }
 
@@ -55,6 +59,33 @@ namespace Avrora.ViewModel.ViewModelChat
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            }
+        }
+        public void AddMessage(Message message, string nickname)
+        {
+            ((MainWindow)Application.Current.MainWindow).ErrorPanelStatusServerForChatSet(" ", false);
+
+            foreach (Chat chat in chats)
+            {
+                if (chat.Nickname == nickname)
+                    chat.AddMessage(message);
+            }
+        }
+        public void ErrorSendMessage(StatusMessage status)
+        {
+            MainWindow win = (MainWindow)Application.Current.MainWindow;
+
+            switch (status)
+            {
+                case StatusMessage.ErrorData:
+                    win.ErrorPanelStatusServerForChatSet("Error data user", true);
+                    break;
+                case StatusMessage.ErrorMessage:
+                    win.ErrorPanelStatusServerForChatSet("Error data in message", true);
+                    break;
+                case StatusMessage.ErrorConnect:
+                    win.ErrorPanelStatusServerForChatSet("Server dont answer", true);
+                    break;
             }
         }
         public void AddChat(string nickname)
@@ -71,7 +102,6 @@ namespace Avrora.ViewModel.ViewModelChat
         {
             TakeChats();
         }
-
         public void ChangeActualUser(UserSettingsContainer _)
         {
             TakeChats();

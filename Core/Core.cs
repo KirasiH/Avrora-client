@@ -5,9 +5,14 @@ using Avrora.Core.Settings.UserSettings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Avrora.Core
@@ -17,6 +22,25 @@ namespace Avrora.Core
         Text = 0,
         Photo = 1,
         File = 2,
+    }
+    public enum ResponceStatus
+    {
+        ErrorData = 0,
+        ErrorDataUser = 1,
+        Create = 3,
+        ErrorDelete = 4,
+        Delete = 5,
+        ErrorRecv = 6,
+        Recreate = 7,
+        Set = 8,
+    }
+
+    public enum StatusMessage
+    {
+        ErrorData = 0,
+        ErrorMessage = 1,
+        Send = 3,
+        ErrorConnect = 4,
     }
     public class Core
     {
@@ -29,17 +53,20 @@ namespace Avrora.Core
         public delegate void DelegateChangeUser(UserSettingsContainer container);
         public static event DelegateChangeUser? EventChangeActualUser;
 
-        public delegate void UserMethodsDelegate(UserSettingsContainer conteiner, string context);
+        public delegate void UserMethodsDelegate(UserSettingsContainer conteiner, ResponceStatus resStatus);
         public static event UserMethodsDelegate? EventUserMethods;
 
         public delegate void DelegateErrorURLServer(string uri);
         public static event DelegateErrorURLServer? EventErrorURIServer;
 
-        public delegate void DelegateRecvMessage(Message message);
+        public delegate void DelegateRecvMessage(Message message, string nickname);
         public static event DelegateRecvMessage? EventRecvMessage;
 
-        public delegate void DelegateSendMessage(Message message);
+        public delegate void DelegateSendMessage(Message message, string nickname);
         public static event DelegateSendMessage? EventSendMessage;
+
+        public delegate void DelegateErrorSendMessage(StatusMessage statusErrorSendMessage);
+        public static event DelegateErrorSendMessage EventErrorSendMessage;
 
         public static Settings.Settings Settings { get; private set; }
         public static AvroraAPI.AvroraAPI AvroraAPI { get; private set; }
@@ -49,6 +76,8 @@ namespace Avrora.Core
             Settings = new Settings.Settings();
 
             AvroraAPI = new AvroraAPI.AvroraAPI(Settings.GetActualServer(), Settings);
+
+            CycleRecvMessage();
         }
 
         public static void SetActualServer(string uri)
@@ -111,7 +140,7 @@ namespace Avrora.Core
             string context = await mess.Content.ReadAsStringAsync();
 
             if (EventUserMethods != null)
-                EventUserMethods(container, context);
+                EventUserMethods(container, ConvertInStatus(context));
         }
 
         public static async void DeleteUserAsync(UserSettingsContainer container)
@@ -129,7 +158,7 @@ namespace Avrora.Core
             string context = await mess.Content.ReadAsStringAsync();
 
             if (EventUserMethods != null)
-                EventUserMethods(container, context);
+                EventUserMethods(container, ConvertInStatus(context));
         }
 
         public static async void RecreateUserAsync(UserSettingsTwoContainer container)
@@ -147,17 +176,136 @@ namespace Avrora.Core
             string context = await mess.Content.ReadAsStringAsync();
 
             if (EventUserMethods != null)
-                EventUserMethods(container.new_user, context);
+                EventUserMethods(container.new_user, ConvertInStatus(context));
         }
 
-        public static void SendMessage(string data, IsSendMessage ISM)
+        public static async void SendMessage(string whom, string data, IsSendMessage ISM)
         {
-            
+            ServerSendMessageContainer message = new ServerSendMessageContainer() {
+                whom = whom,
+                user = Settings.GetActualUser(),
+                content = new MessageContentContainer() {
+                    type = $"{ISM}|",
+                }
+            };
+
+            byte[] mess_data;
+
+            if (ISM == IsSendMessage.Text)
+            {
+                mess_data = Encoding.UTF8.GetBytes(data);
+            }
+            else
+            {
+                FileStream fileStream = new FileStream(data, FileMode.Open);
+
+                mess_data = new byte[fileStream.Length];
+
+                fileStream.Read(mess_data, 0, (int)fileStream.Length);
+
+                message.content.type += Path.GetFileName(data);
+            }
+
+            byte[] key = Encoding.UTF8.GetBytes(Settings.GetEncryptingKey(whom));
+
+            message.content.b = EncryptingData(key, mess_data);
+
+            HttpResponseMessage response = await AvroraAPI.SendUserAsync(message);
+
+            if (response == null)
+            {
+                EventErrorSendMessage(StatusMessage.ErrorConnect);
+                return;
+            }
+
+            string context = await response.Content.ReadAsStringAsync();
+
+            if (context == "Send") {
+                message.content.b = mess_data;
+
+                Message mess = Settings.AddMessage(message);
+
+                if (EventSendMessage != null)
+                    EventSendMessage(mess, whom);
+            } else if(context == "Error data") {
+                if (EventErrorSendMessage != null)
+                    EventErrorSendMessage(StatusMessage.ErrorData);
+            } else if (context == "Error Message") {
+                if (EventErrorSendMessage != null)
+                    EventErrorSendMessage(StatusMessage.ErrorMessage);
+            }
         }
 
-        public void RecvMessage()
+        public static void CycleRecvMessage()
         {
-            
+            Thread thread = new Thread(() => 
+            {
+                while (true)
+                {
+                    
+
+                    Thread.Sleep(1000);
+                }
+            });
+
+            thread.Name = "CycleRecvMessage";
+
+            thread.Start();
+        }
+
+        private static void RecvMessage()
+        {
+
+        }
+
+        private static byte[] EncryptingData(byte[] key, byte[] data)
+        {
+            Aes aes = Aes.Create();
+            SHA256 sha256 = SHA256.Create();
+            MD5 md5 = MD5.Create();
+
+            aes.Key = sha256.ComputeHash(key);
+            aes.IV = md5.ComputeHash(Encoding.UTF8.GetBytes("IV"));
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using(CryptoStream cryptoStream = new CryptoStream(stream, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    cryptoStream.Write(data, 0, data.Length);
+                }
+                data = stream.ToArray();
+            }
+
+            return data;
+        }
+
+        private static ResponceStatus ConvertInStatus(string status)
+        {
+            switch (status)
+            {
+                case "Error data":
+                    return ResponceStatus.ErrorData;
+
+                case "Error data user":
+                    return ResponceStatus.ErrorDataUser;
+
+                case "create":
+                    return ResponceStatus.Create;
+
+                case "Error delete":
+                    return ResponceStatus.Delete;
+
+                case "delete":
+                    return ResponceStatus.Delete;
+
+                case "Error recv":
+                    return ResponceStatus.ErrorRecv;
+
+                case "recreate":
+                    return ResponceStatus.Recreate;
+            }
+
+            throw new NotImplementedException($"Not status for {status}");
         }
     }
 }

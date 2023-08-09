@@ -83,18 +83,36 @@ namespace Avrora.Core.AvroraAPI
             }
         }
 
-        public Task RecvUserAsync(UserSettingsContainer conteiner)
+        public async Task<HttpResponseMessage> RecvUserAsync(UserSettingsContainer container)
         {
-            Task task = avroraAPIMethods.RecvUserAsync(conteiner);
+            HttpResponseMessage mess;
 
-            return task;
+            try
+            {
+                mess = await avroraAPIMethods.RecvUserAsync(container);
+
+                return mess;
+            }
+            catch (Exception ex) when (ex is InvalidOperationException || ex is HttpRequestException || ex is TaskCanceledException)
+            {
+                return null;
+            }
         }
 
-        public Task SendUserAsync(UserSettingsContainer conteiner)
+        public async Task<HttpResponseMessage> SendUserAsync(ServerSendMessageContainer messageContainer)
         {
-            Task task = avroraAPIMethods.SendUserAsync(conteiner);
+            HttpResponseMessage mess;
 
-            return task;
+            try
+            {
+                mess = await avroraAPIMethods.SendUserAsync(messageContainer);
+
+                return mess;
+            }
+            catch (Exception ex) when (ex is InvalidOperationException || ex is HttpRequestException || ex is TaskCanceledException)
+            {
+                return null;
+            }
         }
     }
 }

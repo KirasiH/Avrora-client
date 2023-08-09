@@ -87,9 +87,46 @@ namespace Avrora.Pages
             Core.Core.SetActualUser(container);
         }
 
-        public void EventUserMethods(UserSettingsContainer conteiner, string content)
+        public void EventUserMethods(UserSettingsContainer conteiner, ResponceStatus status)
         {
-            StatusBlock.Text = content;
+            string text = "";
+
+            switch (status)
+            {
+                case ResponceStatus.Create:
+                    text = "User created";
+                    break;
+
+                case ResponceStatus.Recreate:
+                    text = "User recreated";
+                    break;
+
+                case ResponceStatus.Delete:
+                    text = "User deleted";
+                    break;
+
+                case ResponceStatus.ErrorData:
+                    text = "";
+                    break;
+
+                case ResponceStatus.ErrorDelete:
+                    text = "Error in user data or this user dont exists";
+                    break;
+
+                case ResponceStatus.ErrorDataUser:
+                    text = "This user is exists";
+                    break;
+
+                case ResponceStatus.ErrorRecv:
+                    text = "Error in old user data or old user isnt exists";
+                    break;
+
+                case ResponceStatus.Set:
+                    text = "User is set";
+                    break;
+            }
+
+            StatusBlock.Text = text;
         }
         
         public void ErrorURIServer(string uri)

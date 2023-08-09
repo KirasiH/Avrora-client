@@ -72,6 +72,12 @@ namespace Avrora.Core.Settings.ChatSettings
 
             chatSettings.AddEncryptingKey(key);
         }
+        public string GetEncryptingKey(string nickname)
+        {
+            ChatSettings chatSettings = NicknameAndChatSettings[nickname];
+
+            return chatSettings.GetEncryptingKey();
+        }
         public void AddChat(string nickname)
         {
             if (!FolderOfChats.TryGetValue(nickname, out string? _))
