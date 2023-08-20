@@ -8,16 +8,19 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Avrora.Core
 {
-    public enum IsSendMessage
+    public enum IsTypeMessage
     {
         Text = 0,
         Photo = 1,
@@ -179,7 +182,7 @@ namespace Avrora.Core
                 EventUserMethods(container.new_user, ConvertInStatus(context));
         }
 
-        public static async void SendMessage(string whom, string data, IsSendMessage ISM)
+        public static async void SendMessage(string whom, string data, IsTypeMessage ISM)
         {
             ServerSendMessageContainer message = new ServerSendMessageContainer() {
                 whom = whom,
@@ -191,7 +194,7 @@ namespace Avrora.Core
 
             byte[] mess_data;
 
-            if (ISM == IsSendMessage.Text)
+            if (ISM == IsTypeMessage.Text)
             {
                 mess_data = Encoding.UTF8.GetBytes(data);
             }
@@ -238,26 +241,56 @@ namespace Avrora.Core
 
         public static void CycleRecvMessage()
         {
-            Thread thread = new Thread(() => 
+            Thread thread = new Thread(() =>
             {
                 while (true)
                 {
-                    
-
                     Thread.Sleep(1000);
+
+                    HttpResponseMessage response = AvroraAPI.RecvUserAsync(Settings.GetActualUser()).Result;
+
+                    if (response == null)
+                        continue;
+
+                    string context = response.Content.ReadAsStringAsync().Result;
+
+                    if (context == "Error")
+                        continue;
+
+                    JsonRecvMessageContainer container = JsonSerializer.Deserialize<JsonRecvMessageContainer>(context);
+                    ServerRecvMessageContainer recvmessage = container.json;
+
+                    if (recvmessage == null)
+                        continue;
+
+                    string sender = recvmessage.sender_nickname;
+
+                    string e = Settings.GetEncryptingKey(sender);
+
+                    byte[] key = Encoding.UTF8.GetBytes(e);
+
+                    try
+                    {
+                        recvmessage.content = DecryptingData(key, recvmessage.content);
+                    }
+                    catch (CryptographicException)
+                    {
+                        recvmessage.content = Encoding.UTF8.GetBytes("We have another keys");
+                        recvmessage.type = "Text|";
+                    }
+
+                    Message message = Settings.AddMessage(recvmessage);
+
+                    if (EventRecvMessage != null)
+                        EventRecvMessage(message, recvmessage.sender_nickname);
                 }
             });
 
+            thread.IsBackground = true;
             thread.Name = "CycleRecvMessage";
 
             thread.Start();
         }
-
-        private static void RecvMessage()
-        {
-
-        }
-
         private static byte[] EncryptingData(byte[] key, byte[] data)
         {
             Aes aes = Aes.Create();
@@ -274,6 +307,27 @@ namespace Avrora.Core
                     cryptoStream.Write(data, 0, data.Length);
                 }
                 data = stream.ToArray();
+            }
+
+            return data;
+        }
+        private static byte[] DecryptingData(byte[] key, byte[] data)
+        {
+            Aes aes = Aes.Create();
+            SHA256 sha256 = SHA256.Create();
+            MD5 md5 = MD5.Create();
+
+            aes.Key = sha256.ComputeHash(key);
+            aes.IV = md5.ComputeHash(Encoding.UTF8.GetBytes("IV"));
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, aes.CreateDecryptor(), CryptoStreamMode.Write))
+                {
+                    cryptoStream.Write(data, 0, data.Length);
+                }
+
+                data = memoryStream.ToArray();
             }
 
             return data;
@@ -307,5 +361,10 @@ namespace Avrora.Core
 
             throw new NotImplementedException($"Not status for {status}");
         }
+    }
+
+    class JsonRecvMessageContainer
+    {
+        public ServerRecvMessageContainer json { get; set; }
     }
 }

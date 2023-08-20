@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -17,7 +18,7 @@ namespace Avrora.ViewModel.ViewModelChat
         private string nickname;
         private string path_save_files;
         private string name = " ";
-        private Message last_message = new Message() { type = "text|", data = " " };
+        private Message last_message = new Message() { type = "Text|", data = " " };
         private int quentity = 0;
         private ObservableCollection<Message> messages = new ObservableCollection<Message>();
 
@@ -42,7 +43,7 @@ namespace Avrora.ViewModel.ViewModelChat
                     });
 
                     if(list.Count != 0)
-                        last_message = Messages.Last();
+                        LastMessage = Messages.Last();
 
                     Quentity = 0;
                 }
@@ -111,11 +112,11 @@ namespace Avrora.ViewModel.ViewModelChat
         }
         public Chat(ChatContainer container)
         {
-            nickname = container.nickname;
-            path_save_files = container.path_save_files;
-            name = container.name ?? name;
-            quentity = container.quentity ?? quentity;
-            last_message = container.last_message ?? last_message;
+            Nickname = container.nickname;
+            PathSaveFiles = container.path_save_files;
+            Name = container.name ?? name;
+            Quentity = container.quentity ?? quentity;
+            LastMessage = container.last_message ?? last_message;
         }
         public void Delete()
         {
@@ -131,18 +132,7 @@ namespace Avrora.ViewModel.ViewModelChat
         {
             Core.Core.Settings.AddEncryptingKey(nickname, encruptingKey);
         }
-        public void DeleteMessages()
-        {
-            messages.Clear();
-        }   
-        public void RecvMessage(Message message)
-        {
-            Messages.Add(message);
-
-            if (!selection)
-                Quentity = quentity++;
-        }
-        public void SendMessage(string data, IsSendMessage isSend)
+        public void SendMessage(string data, IsTypeMessage isSend)
         {
             Core.Core.SendMessage(nickname, data, isSend);
         }
@@ -153,6 +143,9 @@ namespace Avrora.ViewModel.ViewModelChat
 
             Messages.Add(message);
             LastMessage = message;
+
+            if (!selection)
+                Quentity++;
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

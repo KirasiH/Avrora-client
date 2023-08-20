@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\Doctor Ivan\Documents\Avrora\Client change application v2\App.xaml
 7-1558950656
 
-34425783475
+35959076449
 2031577854355
 MainWindow.xaml;Pages\PageApplicationSettings.xaml;Pages\PageChatsSettings.xaml;Pages\PageSettingsUser.xaml;Styles\DarkWindowsStyles.xaml;Windows\ChangeKeyWindows.xaml;Windows\FileSend.xaml;
 
-True
+False
 

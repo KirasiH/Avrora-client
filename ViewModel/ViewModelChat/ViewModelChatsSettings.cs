@@ -8,15 +8,23 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Avrora.ViewModel.ViewModelChat 
 { 
     public class ViewModelChatsSettings : INotifyPropertyChanged
     {
+        public delegate void EventStatusServer(string status, bool flag);
+        public event EventStatusServer OnStatusServer;
+        private object locker = new object();
         private ObservableCollection<Chat> chats = new ObservableCollection<Chat>();
         private Chat? chat;
+
+        private SynchronizationContext syncContext;
+
         public Chat Chat
         {
             get { return chat; }
@@ -44,11 +52,14 @@ namespace Avrora.ViewModel.ViewModelChat
         }
         public ViewModelChatsSettings()
         {
+            syncContext = SynchronizationContext.Current;
+            
             Core.Core.EventChangeActualServer += ChangeActualServer;
             Core.Core.EventChangeActualUser += ChangeActualUser;
 
             Core.Core.EventSendMessage += AddMessage;
-            Core.Core.EventErrorSendMessage+= ErrorSendMessage;
+            Core.Core.EventRecvMessage += AddMessage;
+            Core.Core.EventErrorSendMessage += ErrorSendMessage;
 
             TakeChats();
         }
@@ -63,28 +74,40 @@ namespace Avrora.ViewModel.ViewModelChat
         }
         public void AddMessage(Message message, string nickname)
         {
-            ((MainWindow)Application.Current.MainWindow).ErrorPanelStatusServerForChatSet(" ", false);
-
-            foreach (Chat chat in chats)
+            lock (locker)
             {
-                if (chat.Nickname == nickname)
-                    chat.AddMessage(message);
+
+                syncContext.Post(_ =>
+                {
+                    TakeChats();
+
+                    foreach (Chat chat in chats)
+                    {
+                        if (chat.Nickname == nickname)
+                        {
+                            chat.AddMessage(message);
+                            return;
+                        }
+                    }
+                }, null);
+
             }
         }
         public void ErrorSendMessage(StatusMessage status)
         {
-            MainWindow win = (MainWindow)Application.Current.MainWindow;
+            if (OnStatusServer == null)
+                return;
 
             switch (status)
             {
                 case StatusMessage.ErrorData:
-                    win.ErrorPanelStatusServerForChatSet("Error data user", true);
+                    OnStatusServer("Error data user", true);
                     break;
                 case StatusMessage.ErrorMessage:
-                    win.ErrorPanelStatusServerForChatSet("Error data in message", true);
+                    OnStatusServer("Error user data", true);
                     break;
                 case StatusMessage.ErrorConnect:
-                    win.ErrorPanelStatusServerForChatSet("Server dont answer", true);
+                    OnStatusServer("Server dont answer", true);
                     break;
             }
         }
@@ -94,7 +117,7 @@ namespace Avrora.ViewModel.ViewModelChat
 
             TakeChats();
         }
-        public void SendMessage(string data, IsSendMessage isSend)
+        public void SendMessage(string data, IsTypeMessage isSend)
         {
             chat?.SendMessage(data, isSend);
         }
@@ -108,16 +131,20 @@ namespace Avrora.ViewModel.ViewModelChat
         }
         private void TakeChats()
         {
+            Chat old_chat = chat;
+
             List<ChatContainer> list_chats = Core.Core.Settings.GetChats();
 
             chats.Clear();
 
             list_chats.ForEach((container) =>
                 {
-                    Chat chat = new Chat(container);
+                    Chat ch = new Chat(container);
 
-                    chats.Add(chat);
+                    chats.Add(ch);
                 });
+
+            Chat = old_chat;
         }
     }
 }

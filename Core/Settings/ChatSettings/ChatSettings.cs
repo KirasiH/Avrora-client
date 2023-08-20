@@ -108,7 +108,7 @@ namespace Avrora.Core.Settings.ChatSettings
                 me = true
             };
 
-            if (type == IsSendMessage.Text.ToString())
+            if (type == IsTypeMessage.Text.ToString())
             {
                 saving_message.data = Converter.GetStringFromBytes(message.content.b);
             }
@@ -160,7 +160,7 @@ namespace Avrora.Core.Settings.ChatSettings
                 sender = message.sender_nickname
             };
 
-            if (type == "text")
+            if (type == "Text")
             {
                 saving_message.data = Converter.GetStringFromBytes(message.content);
             }
@@ -180,6 +180,9 @@ namespace Avrora.Core.Settings.ChatSettings
             }
 
             messages.Add(saving_message);
+
+            name = message.sender_name;
+            last_message = saving_message;
 
             id++;
 
@@ -259,7 +262,7 @@ namespace Avrora.Core.Settings.ChatSettings
         }
         private bool IsSave(string type)
         {
-            if (type != IsSendMessage.File.ToString())
+            if (type != IsTypeMessage.File.ToString())
                 return true;
 
             return false;

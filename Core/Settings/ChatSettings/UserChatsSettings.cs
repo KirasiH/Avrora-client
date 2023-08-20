@@ -74,6 +74,8 @@ namespace Avrora.Core.Settings.ChatSettings
         }
         public string GetEncryptingKey(string nickname)
         {
+            AddChat(nickname);
+
             ChatSettings chatSettings = NicknameAndChatSettings[nickname];
 
             return chatSettings.GetEncryptingKey();

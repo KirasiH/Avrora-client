@@ -86,11 +86,11 @@ namespace Avrora.Core.Settings.ChatSettings
         {
             return actualServerChatsSettings.GetChats();
         }
-        public Message? AddMessage(ServerSendMessageContainer message)
+        public Message AddMessage(ServerSendMessageContainer message)
         {
             return actualServerChatsSettings.AddMessage(message);
         }
-        public Message? AddMessage(ServerRecvMessageContainer message)
+        public Message AddMessage(ServerRecvMessageContainer message)
         {
             return actualServerChatsSettings.AddMessage(message);
         }

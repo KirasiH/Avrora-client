@@ -19,6 +19,8 @@ using Avrora.Pages;
 using Avrora.ViewModel.ViewModelChat;
 using Avrora.Windows;
 using Avrora.Core;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace Avrora
 {
@@ -34,18 +36,22 @@ namespace Avrora
             InitializeComponent();
 
             VMCS = (ViewModelChatsSettings)Application.Current.Resources["viewModelChatSettings"];
+            VMCS.OnStatusServer += ErrorPanelStatusServerForChatSet;
         }
 
         public void ErrorPanelStatusServerForChatSet(string text, bool visibility)
         {
-            if (visibility)
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
             {
-                ErrorStatusServerTextBlock.Text = text;
-                ErrorPanelStatusServerForChat.Visibility = Visibility.Visible;
-                return;
-            }
+                if (visibility)
+                {
+                    ErrorStatusServerTextBlock.Text = text;
+                    ErrorPanelStatusServerForChat.Visibility = Visibility.Visible;
+                    return;
+                }
 
-            ErrorPanelStatusServerForChat.Visibility = Visibility.Collapsed;
+                ErrorPanelStatusServerForChat.Visibility = Visibility.Collapsed;
+            });
         }
 
         private void BorderMouseDown(object sender, MouseButtonEventArgs e)
@@ -106,7 +112,7 @@ namespace Avrora
         {
             if (e.Key == Key.Return && !string.IsNullOrWhiteSpace(ChatGridBlockTextBoxChat.Text))
             {
-                VMCS.SendMessage(ChatGridBlockTextBoxChat.Text, IsSendMessage.Text);
+                VMCS.SendMessage(ChatGridBlockTextBoxChat.Text, IsTypeMessage.Text);
 
                 ChatGridBlockTextBoxChat.Text = "";
             }

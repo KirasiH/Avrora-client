@@ -4,16 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Avrora"
-        xmlns:col="clr-namespace:Avrora.ViewModel"
+        xmlns:col="clr-namespace:Avrora.ViewModel.ViewModelChat"
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="1000"
         Style="{DynamicResource ForWindow}"
-        WindowStyle="None"
-        AllowsTransparency="True">
+        WindowStyle="None">
 
     <Window.Resources>
         <local:ConverterQuentityForListChatsItems x:Key="converterQuentityForListChatsItems"/>
         <local:ConverterVisibilityForListChatsItems x:Key="converterVisibilityForListChatsItems"/>
+        <col:FileNameConverter x:Key="fileNameConverter"/>
     </Window.Resources>
 
     <Grid>
@@ -252,6 +252,7 @@
                          Background="Transparent"
                          BorderBrush="Transparent"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         VirtualizingPanel.ScrollUnit="Pixel"
                          ItemsSource="{Binding Messages}">
 
                     <ListBox.ItemTemplate>
@@ -260,12 +261,13 @@
                             <Grid>
 
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="25"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal">
+                                            Orientation="Horizontal"
+                                            Margin="0 5 0 0">
                                     <TextBlock Text="{Binding sender}"
                                                FontSize="16"
                                                Foreground="White"/>
@@ -280,11 +282,82 @@
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1">
-                                    <TextBlock Text="{Binding data}"
-                                               FontSize="16"
-                                               Foreground="White"/>
+
+                                    <StackPanel Grid.Row="1">
+
+                                        <ContentControl Content="{Binding}">
+
+                                            <ContentControl.Style>
+                                                <Style TargetType="ContentControl">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding type}"
+                                                                     Value="Text">
+                                                            <Setter Property="ContentTemplate">
+                                                                <Setter.Value>
+                                                                    <DataTemplate>
+
+                                                                        <Grid>
+                                                                            <TextBlock Text="{Binding data}"
+                                                                                       FontSize="16"
+                                                                                       Foreground="White"/>
+                                                                        </Grid>
+
+                                                                    </DataTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding type}"
+                                                                     Value="Photo">
+                                                            <Setter Property="ContentTemplate">
+                                                                <Setter.Value>
+                                                                    <DataTemplate>
+                                                                        <Grid Margin="0 10 0 0">
+                                                                            <Image Source="{Binding data}"
+                                                                                   Height="300"/>
+                                                                        </Grid>
+                                                                    </DataTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding type}"
+                                                                     Value="File">
+
+                                                            <Setter Property="ContentTemplate">
+                                                                <Setter.Value>
+                                                                    <DataTemplate>
+                                                                        <Grid Height="50">
+
+                                                                            <StackPanel Orientation="Horizontal" Margin="10 10 10 0">
+                                                                                <TextBlock Text="File: "
+                                                                                       FontSize="20"
+                                                                                       Foreground="White"/>
+
+                                                                                <TextBlock Text="{Binding data, Converter={StaticResource fileNameConverter}}"
+                                                                                       FontSize="20"
+                                                                                       Foreground="White"/>
+                                                                            </StackPanel>
+                                                                            
+                                                                        </Grid>
+                                                                    </DataTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ContentControl.Style>
+                                        </ContentControl>
+
+                                    </StackPanel>
                                 </StackPanel>
-                                
                             </Grid>
                             
                         </DataTemplate>

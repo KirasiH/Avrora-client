@@ -29,15 +29,15 @@ namespace Avrora
             return FileIs.File;
         }
 
-        public static IsSendMessage ConvertInIsSendMessage(FileIs fileis)
+        public static IsTypeMessage ConvertInIsSendMessage(FileIs fileis)
         {
             switch (fileis)
             {
                 case FileIs.Photo:
-                    return IsSendMessage.Photo;
+                    return IsTypeMessage.Photo;
             }
 
-            return IsSendMessage.File;
+            return IsTypeMessage.File;
         }
     }
 }
